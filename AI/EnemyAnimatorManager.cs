@@ -39,6 +39,26 @@ namespace ZV
             }
         }
 
+        public void EnableIsParrying()
+        {
+            enemyManager.isParrying = true;
+        }
+
+        public void DisableIsParrying()
+        {
+            enemyManager.isParrying = false;
+        }
+
+        public void EnableCanBeRiposted()
+        {
+            enemyManager.canBeReposted = true;
+        }
+
+        public void DisableCanBeReposted()
+        {
+            enemyManager.canBeReposted = false;
+        }
+
         private void OnAnimatorMove()
         {
             float delta = Time.deltaTime;

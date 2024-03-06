@@ -105,6 +105,18 @@ namespace ZV
             }
         }
 
+        public void HandleLTAction()
+        {
+            if(playerInventory.leftWeapon.isShieldWeapon)
+            {
+                PerformLTWeaponArt(inputHandler.twoHandFlag);
+            }
+            else if(playerInventory.leftWeapon.isMeleeWeapon)
+            {
+                // do a light attack
+            }
+        }
+
         #endregion
 
         #region Attack Actions
@@ -148,6 +160,21 @@ namespace ZV
                         animatorHandler.PlayTargetAnimation("Shrug", true);
                     }
                 }
+            }
+        }
+
+        private void PerformLTWeaponArt(bool isTwoHanding)
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if(isTwoHanding)
+            {
+                
+            }
+            else
+            {
+                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_art, true);
             }
         }
 

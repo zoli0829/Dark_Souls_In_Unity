@@ -19,7 +19,7 @@ namespace ZV
         public string left_hand_idle;
         public string th_idle;
 
-        [Header("One Handed Attack Animations")]
+        [Header("Attack Animations")]
         public string oh_light_attack_01;
         public string oh_light_attack_02;
         public string oh_heavy_attack_01;
@@ -27,6 +27,9 @@ namespace ZV
         public string th_light_attack_01;
         public string th_light_attack_02;
         public string th_light_attack_03;
+
+        [Header("Weapon Art")]
+        public string weapon_art;
 
         [Header("Stamina Costs")]
         public int baseStamina;
@@ -38,5 +41,6 @@ namespace ZV
         public bool isFaithCaster;
         public bool isPyroCaster;
         public bool isMeleeWeapon;
+        public bool isShieldWeapon;
     }
 }

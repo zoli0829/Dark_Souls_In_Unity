@@ -116,6 +116,26 @@ namespace ZV
             anim.SetBool("isInvulnerable", false);
         }
 
+        public void EnableIsParrying()
+        {
+            playerManager.isParrying = true;
+        }
+
+        public void DisableIsParrying()
+        {
+            playerManager.isParrying = false;
+        }
+
+        public void EnableCanBeRiposted()
+        {
+            playerManager.canBeReposted = true;
+        }
+
+        public void DisableCanBeReposted()
+        {
+            playerManager.canBeReposted = false;
+        }
+
         public override void TakeCriticalDamageAnimationEvent()
         {
             playerStats.TakeDamageNoAnimation(playerManager.pendindCriticalDamage);
