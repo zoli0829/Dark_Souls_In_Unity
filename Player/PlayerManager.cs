@@ -33,7 +33,7 @@ namespace ZV
         {
             cameraHandler = FindFirstObjectByType<CameraHandler>();
             interactableUI = FindFirstObjectByType<InteractableUI>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
+            backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
             playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
 
             // moved these below from the start 
