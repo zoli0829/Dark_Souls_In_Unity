@@ -7,6 +7,9 @@ namespace ZV
     [CreateAssetMenu(menuName = "AI/Enemy Actions/ Attack Action")]
     public class EnemyAttackAction : EnemyAction
     {
+        public bool canCombo;
+        public EnemyAttackAction comboAction;
+
         public int attackScore = 3;
         public float recoveryTime = 2f;
 

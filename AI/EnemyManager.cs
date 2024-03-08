@@ -21,6 +21,9 @@ namespace ZV
         public float rotationSpeed = 15f;
         public float maximumAttackRange = 1.5f;
 
+        [Header("Combat Flags")]
+        public bool canDoCombo;
+
         [Header("AI Settings")]
         public float detectionRadius = 20f;
         // The higher, lower, respectively these angles are, the greater or lower the character's detection field of view
@@ -48,13 +51,17 @@ namespace ZV
         private void Update()
         {
             HandleRecoveryTimer();
+            HandleStateMachine();
+
             isInteracting = enemyAnimationManager.anim.GetBool("isInteracting");
+            canDoCombo = enemyAnimationManager.anim.GetBool("canDoCombo");
             enemyAnimationManager.anim.SetBool("isDead", enemyStats.isDead);
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
-            HandleStateMachine();
+            navMeshAgent.transform.localPosition = Vector3.zero;
+            navMeshAgent.transform.localRotation = Quaternion.identity;
         }
 
         private void HandleStateMachine()

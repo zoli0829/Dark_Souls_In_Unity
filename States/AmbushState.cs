@@ -17,7 +17,10 @@ namespace ZV
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
-            if(isSleeping && enemyManager.isInteracting == false)
+            if (enemyManager.isInteracting)
+                return this;
+
+            if (isSleeping && enemyManager.isInteracting == false)
             {
                 enemyAnimatorManager.PlayTargetAnimation(sleepAnimation, true);
             }
