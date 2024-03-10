@@ -105,6 +105,11 @@ namespace ZV
             }
         }
 
+        public void HandleLBAction()
+        {
+            PerformLBBlockingAction();
+        }
+
         public void HandleLTAction()
         {
             if(playerInventory.leftWeapon.isShieldWeapon)
@@ -181,6 +186,22 @@ namespace ZV
         private void SuccessfullyCastSpell()
         {
             playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats);
+        }
+
+        #endregion
+
+        #region Defensive Actions
+
+        private void PerformLBBlockingAction()
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if (playerManager.isBlocking)
+                return;
+
+            animatorHandler.PlayTargetAnimation("Block Start", false, true);
+            playerManager.isBlocking = true;
         }
 
         #endregion

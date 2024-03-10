@@ -28,6 +28,7 @@ namespace ZV
         public bool isUsingRightHand;
         public bool isUsingLeftHand;
         public bool isInvulnerable;
+        public bool isBlocking;
 
         private void Awake()
         {
@@ -50,6 +51,7 @@ namespace ZV
             canDoCombo = anim.GetBool("canDoCombo");
             anim.SetBool("isInAir", isInAir);
             anim.SetBool("isDead", playerStats.isDead);
+            anim.SetBool("isBlocking", isBlocking);
             isUsingRightHand = anim.GetBool("isUsingRightHand");
             isUsingLeftHand = anim.GetBool("isUsingLeftHand");
             isInvulnerable = anim.GetBool("isInvulnerable");

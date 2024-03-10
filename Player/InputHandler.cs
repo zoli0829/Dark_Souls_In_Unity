@@ -18,6 +18,7 @@ namespace ZV
         public bool y_Input;
         public bool rb_Input;
         public bool rt_Input;
+        public bool lb_Input;
         public bool lt_Input;
         public bool critical_Attack_Input;
         public bool jump_Input;
@@ -76,6 +77,8 @@ namespace ZV
                 
                 inputActions.PlayerActions.RB.performed += i => rb_Input = true;
                 inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+                inputActions.PlayerActions.LB.performed += i => lb_Input = true;
+                inputActions.PlayerActions.LB.canceled += i => lb_Input = false;
                 inputActions.PlayerActions.LT.performed += i => lt_Input = true;
                 inputActions.PlayerQuickSlots.DPadRight.performed += i => d_Pad_Right = true;
                 inputActions.PlayerQuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
@@ -103,7 +106,7 @@ namespace ZV
         {
             HandleMoveInput(delta);
             HandleRollInput(delta);
-            HandleAttackInput(delta);
+            HandleCombatInput(delta);
             HandleQuickSlotsInput();
             HandleInventoryInput();
             HandleLockOnInput();
@@ -150,7 +153,7 @@ namespace ZV
             }
         }
 
-        private void HandleAttackInput(float delta)
+        private void HandleCombatInput(float delta)
         {
             if(rb_Input)
             {
@@ -176,6 +179,15 @@ namespace ZV
                     animatorHandler.anim.SetBool("isUsingRightHand", true);
                     playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
                 }
+            }
+
+            if(lb_Input)
+            {
+                playerAttacker.HandleLBAction();
+            }
+            else
+            {
+                playerManager.isBlocking = false;
             }
 
             if(lt_Input)
