@@ -47,6 +47,7 @@ namespace ZV
         PlayerInventory playerInventory;
         PlayerManager playerManager;
         PlayerStats playerStats;
+        BlockingCollider blockingCollider;
         WeaponSlotManager weaponSlotManager;
         CameraHandler cameraHandler;
         PlayerAnimatorManager animatorHandler;
@@ -61,6 +62,7 @@ namespace ZV
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
             playerStats = GetComponent<PlayerStats>();
+            blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindFirstObjectByType<UIManager>();
             cameraHandler = FindAnyObjectByType<CameraHandler>();
             animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
@@ -188,6 +190,11 @@ namespace ZV
             else
             {
                 playerManager.isBlocking = false;
+
+                if(blockingCollider.blockingCollider.enabled)
+                {
+                    blockingCollider.DisableBlockingCollider();
+                }
             }
 
             if(lt_Input)
