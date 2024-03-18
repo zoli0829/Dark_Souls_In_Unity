@@ -29,8 +29,11 @@ namespace ZV
         // The higher, lower, respectively these angles are, the greater or lower the character's detection field of view
         public float maximumDetectionAngle = 50f;
         public float minimumDetectionAngle = -50f;
-
         public float currentRecoveryTime = 0f;
+
+        [Header("AI Combat Settings")]
+        public bool allowAIToPerformCombos;
+        public float comboLikelyhood;
 
         private void Awake()
         {
