@@ -8,6 +8,8 @@ namespace ZV
     {
         EnemyAnimatorManager enemyAnimatorManager;
 
+        public UIEnemyHealthBar enemyHealthBar;
+
         public int soulsAwardedOnDeath = 50;
 
         private void Awake()
@@ -19,6 +21,7 @@ namespace ZV
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
+            enemyHealthBar.SetMaxHealth(maxHealth);
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -30,6 +33,8 @@ namespace ZV
         public void TakeDamageNoAnimation(int damage)
         {
             currentHealth -= damage;
+
+            enemyHealthBar.SetHealth(currentHealth);
 
             if (currentHealth <= 0)
             {
@@ -44,6 +49,7 @@ namespace ZV
                 return;
 
             currentHealth -= damage;
+            enemyHealthBar.SetHealth(currentHealth);
 
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
