@@ -11,8 +11,8 @@ namespace ZV
 
         public WeaponItem attackingWeapon;
 
-        WeaponHolderSlot leftHandSlot;
-        WeaponHolderSlot rightHandSlot;
+        public WeaponHolderSlot leftHandSlot;
+        public WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot backSlot;
 
         public DamageCollider leftHandDamageCollider;
@@ -49,6 +49,12 @@ namespace ZV
                     backSlot = weaponSlot;
                 }
             }
+        }
+
+        public void LoadBothWeaponsOnSlots()
+        {
+            LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+            LoadWeaponOnSlot(playerInventory.leftWeapon, true);
         }
 
         public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)

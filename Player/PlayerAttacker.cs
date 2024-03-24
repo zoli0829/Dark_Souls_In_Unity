@@ -12,6 +12,7 @@ namespace ZV
         PlayerStats playerStats;
         PlayerInventory playerInventory;
         InputHandler inputHandler;
+        CameraHandler cameraHandler;
         WeaponSlotManager weaponSlotManager;
         public string lastAttack;
 
@@ -27,6 +28,7 @@ namespace ZV
             playerInventory = GetComponentInParent<PlayerInventory>();
             weaponSlotManager = GetComponent<WeaponSlotManager>();
             inputHandler = GetComponentInParent<InputHandler>();
+            cameraHandler = FindFirstObjectByType<CameraHandler>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -160,7 +162,7 @@ namespace ZV
                 {
                     if(playerStats.currentFocusPoints >= playerInventory.currentSpell.focusPointCost)
                     {
-                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats);
+                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
                     }
                     else
                     {
@@ -187,7 +189,7 @@ namespace ZV
 
         private void SuccessfullyCastSpell()
         {
-            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats);
+            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
         }
 
         #endregion

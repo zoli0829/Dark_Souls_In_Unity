@@ -11,6 +11,7 @@ namespace ZV
         public SpellItem currentSpell;
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
+        public ConsumableItem currentConsumableItem;
 
         public WeaponItem unarmedWeapon;
 

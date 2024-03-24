@@ -9,6 +9,7 @@ namespace ZV
     {
         public CharacterManager characterManager;
         Collider damageCollider;
+        public bool enabledDamageColliderOnStartUp = false;
 
         public int currentWeaponDamage = 25;
 
@@ -17,7 +18,7 @@ namespace ZV
             damageCollider = GetComponent<Collider>();
             damageCollider.gameObject.SetActive(true);
             damageCollider.isTrigger = true;
-            damageCollider.enabled = false;
+            damageCollider.enabled = enabledDamageColliderOnStartUp;
         }
 
         public void EnableDamageCollider()

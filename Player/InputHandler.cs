@@ -15,6 +15,7 @@ namespace ZV
 
         public bool b_Input;
         public bool a_Input;
+        public bool x_Input;
         public bool y_Input;
         public bool rb_Input;
         public bool rt_Input;
@@ -46,6 +47,8 @@ namespace ZV
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        PlayerAnimatorManager playerAnimatorManager;
+        PlayerEffectsManager playerEffectsManager;
         PlayerStats playerStats;
         BlockingCollider blockingCollider;
         WeaponSlotManager weaponSlotManager;
@@ -62,6 +65,8 @@ namespace ZV
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
             playerStats = GetComponent<PlayerStats>();
+            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
+            playerEffectsManager = GetComponentInChildren<PlayerEffectsManager>();
             blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindFirstObjectByType<UIManager>();
             cameraHandler = FindAnyObjectByType<CameraHandler>();
@@ -84,7 +89,9 @@ namespace ZV
                 inputActions.PlayerActions.LT.performed += i => lt_Input = true;
                 inputActions.PlayerQuickSlots.DPadRight.performed += i => d_Pad_Right = true;
                 inputActions.PlayerQuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
-                inputActions.PlayerActions.Interact.performed += i => a_Input = true;
+                inputActions.PlayerActions.A.performed += i => a_Input = true;
+
+                inputActions.PlayerActions.X.performed += i => x_Input = true;
                 inputActions.PlayerActions.Roll.performed += i => b_Input = true;
                 inputActions.PlayerActions.Roll.canceled += i => b_Input = false;
                 inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
@@ -114,6 +121,7 @@ namespace ZV
             HandleLockOnInput();
             HandleTwoHandInput();
             HandleCriticalAttackInput();
+            HandleUseConsumableInput();
         }
 
         private void HandleMoveInput(float delta)
@@ -314,6 +322,15 @@ namespace ZV
             {
                 critical_Attack_Input = false;
                 playerAttacker.AttemptBackstabOrRipose();
+            }
+        }
+
+        private void HandleUseConsumableInput()
+        {
+            if(x_Input)
+            {
+                x_Input = false;
+                playerInventory.currentConsumableItem.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
             }
         }
     }
