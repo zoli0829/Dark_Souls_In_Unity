@@ -8,10 +8,15 @@ namespace ZV
     {
         WeaponSlotManager weaponSlotManager;
 
+        [Header("Quick Slot Items")]
         public SpellItem currentSpell;
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
         public ConsumableItem currentConsumableItem;
+
+        [Header("Current Equipment")]
+        public HelmetEquipment currentHelmetEquipment;
+        public TorsoEquipment currentTorsoEqipment;
 
         public WeaponItem unarmedWeapon;
 
