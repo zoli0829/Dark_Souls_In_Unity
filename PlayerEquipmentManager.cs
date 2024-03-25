@@ -12,14 +12,17 @@ namespace ZV
         [Header("Equipment Model Changers")]
         HelmetModelChanger helmetModelChanger;
         TorsoModelChanger torsoModelChanger;
-        //LEG EQUIPMENT
+        HipModelChanger hipModelChanger;
+        LeftLegModelChanger leftLegModelChanger;
+        RightLegModelChanger rightLegModelChanger;
         //HAND EQUIPMENT
 
         [Header("Default Naked Models")]
         public GameObject nakedHeadModel;
         public string nakedTorsoModel;
-        //nakedLegModel;
-        //nakedHandModel;
+        public string nakedHipModel;
+        public string nakedLeftLeg;
+        public string nakedRightLeg;
 
         [SerializeField] BlockingCollider blockingCollider;
 
@@ -29,6 +32,9 @@ namespace ZV
             playerInventory = GetComponentInParent<PlayerInventory>();
             helmetModelChanger = GetComponentInChildren<HelmetModelChanger>();
             torsoModelChanger = GetComponentInChildren<TorsoModelChanger>();
+            hipModelChanger = GetComponentInChildren<HipModelChanger>();
+            leftLegModelChanger = GetComponentInChildren<LeftLegModelChanger>();
+            rightLegModelChanger = GetComponentInChildren<RightLegModelChanger>();
         }
 
         private void Start()
@@ -38,8 +44,10 @@ namespace ZV
 
         private void EquipAllEquipmentModelsOnStart()
         {
+            // HEAD EQUIPMENT
             helmetModelChanger.UnEquipAllHelmetModels();
 
+            // Equip helmet equipment
             if(playerInventory.currentHelmetEquipment != null)
             {
                 nakedHeadModel.SetActive(false);
@@ -47,20 +55,41 @@ namespace ZV
             }
             else
             {
-                // EQUIP DEFAULT HEAD
+                // Equip default head
                 nakedHeadModel.SetActive(true);
             }
 
+            // TORSO EQUIPMENT
             torsoModelChanger.UnEquipAllTorsoModels();
 
+            // Equip torso equipment
             if(playerInventory.currentTorsoEqipment != null)
             {
                 torsoModelChanger.EquipTorsoModelByName(playerInventory.currentTorsoEqipment.torsoModelName);
             }
             else
             {
-                // EQUIP DEFAULT TORSO (NAKED)
+                // Equip default torso (naked)
                 torsoModelChanger.EquipTorsoModelByName(nakedTorsoModel);
+            }
+            // LEG EQUIPMENT
+            hipModelChanger.UnEquipAllHipModels();
+            leftLegModelChanger.UnEquipAllLeftLegModels();
+            rightLegModelChanger.UnEquipAllRightLegModels();
+
+            // Equip leg equipment
+            if(playerInventory.currentLegEquipment != null)
+            {
+                hipModelChanger.EquipHipModelByName(playerInventory.currentLegEquipment.hipModelName);
+                leftLegModelChanger.EquipLeftLegModelByName(playerInventory.currentLegEquipment.leftLegModelName);
+                rightLegModelChanger.EquipRightLegModelByName(playerInventory.currentLegEquipment.rightLegModelName);
+            }
+            else
+            {
+                // Equip default leg
+                hipModelChanger.EquipHipModelByName(nakedHipModel);
+                leftLegModelChanger.EquipLeftLegModelByName(nakedLeftLeg);
+                rightLegModelChanger.EquipRightLegModelByName(nakedRightLeg);
             }
         }
 
