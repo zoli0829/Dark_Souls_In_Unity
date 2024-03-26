@@ -18,6 +18,7 @@ namespace ZV
         public HelmetEquipment currentHelmetEquipment;
         public TorsoEquipment currentTorsoEqipment;
         public LegEquipment currentLegEquipment;
+        public HandEquipment currentHandEquipment;
 
         public WeaponItem unarmedWeapon;
 
