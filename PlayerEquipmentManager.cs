@@ -8,6 +8,7 @@ namespace ZV
     {
         InputHandler inputHandler;
         PlayerInventory playerInventory;
+        PlayerStats playerStats;
 
         [Header("Equipment Model Changers")]
         // HEAD EQUIPMENT
@@ -45,6 +46,8 @@ namespace ZV
         {
             inputHandler = GetComponentInParent<InputHandler>();
             playerInventory = GetComponentInParent<PlayerInventory>();
+            playerStats = GetComponentInParent<PlayerStats>();
+
             helmetModelChanger = GetComponentInChildren<HelmetModelChanger>();
             torsoModelChanger = GetComponentInChildren<TorsoModelChanger>();
             hipModelChanger = GetComponentInChildren<HipModelChanger>();
@@ -68,16 +71,21 @@ namespace ZV
             // HEAD EQUIPMENT
             helmetModelChanger.UnEquipAllHelmetModels();
 
-            // Equip helmet equipment
             if(playerInventory.currentHelmetEquipment != null)
             {
                 nakedHeadModel.SetActive(false);
                 helmetModelChanger.EquipHelmetModelByName(playerInventory.currentHelmetEquipment.helmetModelName);
+                playerStats.physicalDamageAbsorptionHead = playerInventory.currentHelmetEquipment.physicalDefense;
+
+                Debug.Log("Helmet Absorption is " + playerStats.physicalDamageAbsorptionHead + "%");
             }
             else
             {
                 // Equip default head
                 nakedHeadModel.SetActive(true);
+
+                // Setting the default physical damage absorption
+                playerStats.physicalDamageAbsorptionHead = 0;
             }
 
             // TORSO EQUIPMENT
@@ -85,12 +93,14 @@ namespace ZV
             upperLeftArmModelChanger.UnEquipAllArmModels();
             upperRightArmModelChanger.UnEquipAllArmModels();
 
-            // Equip torso equipment
             if(playerInventory.currentTorsoEqipment != null)
             {
                 torsoModelChanger.EquipTorsoModelByName(playerInventory.currentTorsoEqipment.torsoModelName);
                 upperLeftArmModelChanger.EquiparmModelByName(playerInventory.currentTorsoEqipment.upperLeftArmModelName);
                 upperRightArmModelChanger.EquiparmModelByName(playerInventory.currentTorsoEqipment.upperRightArmModelName);
+                playerStats.physicalDamageAbsorptionBody = playerInventory.currentTorsoEqipment.physicalDefense;
+
+                Debug.Log("Body Absorption is " + playerStats.physicalDamageAbsorptionBody + "%");
             }
             else
             {
@@ -98,18 +108,23 @@ namespace ZV
                 torsoModelChanger.EquipTorsoModelByName(nakedTorsoModel);
                 upperLeftArmModelChanger.EquiparmModelByName(nakedUpperLeftArm);
                 upperRightArmModelChanger.EquiparmModelByName(nakedUpperRightArm);
+
+                // Setting the default physical damage absorption
+                playerStats.physicalDamageAbsorptionBody = 0;
             }
             // LEG EQUIPMENT
             hipModelChanger.UnEquipAllHipModels();
             leftLegModelChanger.UnEquipAllLeftLegModels();
             rightLegModelChanger.UnEquipAllRightLegModels();
 
-            // Equip leg equipment
             if(playerInventory.currentLegEquipment != null)
             {
                 hipModelChanger.EquipHipModelByName(playerInventory.currentLegEquipment.hipModelName);
                 leftLegModelChanger.EquipLeftLegModelByName(playerInventory.currentLegEquipment.leftLegModelName);
                 rightLegModelChanger.EquipRightLegModelByName(playerInventory.currentLegEquipment.rightLegModelName);
+                playerStats.physicalDamageAbsorptionLegs = playerInventory.currentLegEquipment.physicalDefense;
+
+                Debug.Log("Leg Absorption is " + playerStats.physicalDamageAbsorptionLegs + "%");
             }
             else
             {
@@ -117,6 +132,9 @@ namespace ZV
                 hipModelChanger.EquipHipModelByName(nakedHipModel);
                 leftLegModelChanger.EquipLeftLegModelByName(nakedLeftLeg);
                 rightLegModelChanger.EquipRightLegModelByName(nakedRightLeg);
+
+                // Setting the default physical damage absorption
+                playerStats.physicalDamageAbsorptionLegs = 0;
             }
 
             // HAND EQUIPMENT
@@ -131,6 +149,9 @@ namespace ZV
                 lowerRightArmModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.lowerRightArmModelName);
                 leftHandModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.leftHandModelName);
                 rightHandModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.rightHandModelName);
+                playerStats.physicalDamageAbsorptionHands = playerInventory.currentHandEquipment.physicalDefense;
+
+                Debug.Log("Hand Absorption is " + playerStats.physicalDamageAbsorptionHands + "%");
             }
             else
             {
@@ -138,6 +159,9 @@ namespace ZV
                 lowerRightArmModelChanger.EquiparmModelByName(nakedLowerRightArm);
                 leftHandModelChanger.EquiparmModelByName(nakedLeftHand);
                 rightHandModelChanger.EquiparmModelByName(nakedRightHand);
+
+                // Setting the default physical damage absorption
+                playerStats.physicalDamageAbsorptionHands = 0;
             }
         }
 

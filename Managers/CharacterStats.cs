@@ -20,11 +20,40 @@ namespace ZV
 
         public int soulCount = 0;
 
+        [Header("Armor Absorptions")]
+        public float physicalDamageAbsorptionHead;
+        public float physicalDamageAbsorptionBody;
+        public float physicalDamageAbsorptionLegs;
+        public float physicalDamageAbsorptionHands;
+
         public bool isDead;
 
-        public virtual void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
         {
+            if(isDead)
+                return;
 
+            float totalPhysicalDamageAbsorption = 1 - 
+                (1 - physicalDamageAbsorptionHead / 100) * 
+                (1 - physicalDamageAbsorptionBody / 100) * 
+                (1 - physicalDamageAbsorptionLegs / 100) * 
+                (1 - physicalDamageAbsorptionHands / 100);
+
+            physicalDamage -= Mathf.RoundToInt((physicalDamage * totalPhysicalDamageAbsorption));
+
+            Debug.Log("Total Damage Absorption is " + totalPhysicalDamageAbsorption + "%");
+
+            float finalDamage = physicalDamage;
+
+            currentHealth -= Mathf.RoundToInt(finalDamage);
+
+            Debug.Log("Total Damage Dealt " + finalDamage);
+
+            if(currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
         }
     }
 }

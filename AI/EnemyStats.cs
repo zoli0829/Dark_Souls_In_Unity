@@ -45,12 +45,9 @@ namespace ZV
 
         public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
-            if (isDead)
-                return;
+            base.TakeDamage(damage, damageAnimation = "Damage_01");
 
-            currentHealth -= damage;
             enemyHealthBar.SetHealth(currentHealth);
-
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)

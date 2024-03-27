@@ -64,20 +64,15 @@ namespace ZV
             if (playerManager.isInvulnerable)
                 return;
 
-            if (isDead)
-                return;
-
-            currentHealth -= damage;
-
+            base.TakeDamage(damage, damageAnimation = "Damage_01");
             healthBar.SetCurrentHealth(currentHealth);
-
             animatorHandler.PlayTargetAnimation(damageAnimation, true);
 
             if(currentHealth <= 0)
             {
                 currentHealth = 0;
-                animatorHandler.PlayTargetAnimation("Dead_01", true);
                 isDead = true;
+                animatorHandler.PlayTargetAnimation("Dead_01", true);
                 // HANDLE PLAYER DEATH
             }
         }
