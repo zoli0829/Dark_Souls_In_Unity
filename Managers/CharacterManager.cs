@@ -19,6 +19,9 @@ namespace ZV
         public bool isParrying;
         public bool isBlocking;
 
+        [Header("Movement Flags")]
+        public bool isRotatingWithRootMotion;
+
         // Damage will be inflicted during an animation event
         // Used in backstab or riposte animations
         public int pendindCriticalDamage;
