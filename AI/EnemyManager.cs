@@ -58,6 +58,7 @@ namespace ZV
 
             isRotatingWithRootMotion = enemyAnimationManager.anim.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimationManager.anim.GetBool("isInteracting");
+            isInvulnerable = enemyAnimationManager.anim.GetBool("isInvulnerable");
             canDoCombo = enemyAnimationManager.anim.GetBool("canDoCombo");
             canRotate = enemyAnimationManager.anim.GetBool("canRotate");
             enemyAnimationManager.anim.SetBool("isDead", enemyStats.isDead);

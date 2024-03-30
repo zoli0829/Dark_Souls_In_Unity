@@ -6,6 +6,9 @@ namespace ZV
 {
     public class ResetAnimatorBool : StateMachineBehaviour
     {
+        public string isInvulnerable = "isInvulnerable";
+        public bool isInvulnerableStatus = false;
+
         public string isInteractingBool = "isInteracting";
         public bool isInteractingStatus = false;
 
@@ -20,6 +23,7 @@ namespace ZV
             animator.SetBool(isInteractingBool, isInteractingStatus);
             animator.SetBool(canRotateBool, canRotateStatus);
             animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
+            animator.SetBool(isInvulnerable, isInvulnerableStatus);
         }
     }
 }

@@ -6,21 +6,21 @@ namespace ZV
 {
     public class EnemyStats : CharacterStats
     {
+        EnemyManager enemyManager;
         EnemyAnimatorManager enemyAnimatorManager;
-
         public UIEnemyHealthBar enemyHealthBar;
-
         public int soulsAwardedOnDeath = 50;
 
         private void Awake()
         {
+            enemyManager = GetComponent<EnemyManager>();
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            maxHealth = SetMaxHealthFromHealthLevel();
+            currentHealth = maxHealth;
         }
 
         private void Start()
         {
-            maxHealth = SetMaxHealthFromHealthLevel();
-            currentHealth = maxHealth;
             enemyHealthBar.SetMaxHealth(maxHealth);
         }
 
