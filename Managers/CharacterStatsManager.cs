@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class CharacterStats : MonoBehaviour
+    public class CharacterStatsManager : MonoBehaviour
     {
         public int healthLevel = 10;
         public int maxHealth;
@@ -20,6 +20,13 @@ namespace ZV
 
         public int soulCount = 0;
 
+        [Header("Poise")]
+        public float totalPoiseDefence; // TOTAL poise during damage calculation
+        public float offensivePoiseBonus; // The poise we GAIN during an attack with a weapon
+        public float armorPoiseBonus; // The poise we GAIN from wearing what ever you have equipped
+        public float totalPoiseResetTime = 15;
+        public float poiseResetTimer = 0;
+
         [Header("Armor Absorptions")]
         public float physicalDamageAbsorptionHead;
         public float physicalDamageAbsorptionBody;
@@ -27,6 +34,16 @@ namespace ZV
         public float physicalDamageAbsorptionHands;
 
         public bool isDead;
+
+        private void Start()
+        {
+            totalPoiseDefence = armorPoiseBonus;
+        }
+
+        protected virtual void Update()
+        {
+            HandlePoiseResetTimer();
+        }
 
         public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
         {
@@ -53,6 +70,18 @@ namespace ZV
             {
                 currentHealth = 0;
                 isDead = true;
+            }
+        }
+
+        public virtual void HandlePoiseResetTimer()
+        {
+            if(poiseResetTimer > 0)
+            {
+                poiseResetTimer -= Time.deltaTime;
+            }
+            else
+            {
+                totalPoiseDefence = armorPoiseBonus;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace ZV
 
         private void OnTriggerEnter(Collider other)
         {
-            PlayerStats playerStats = other.GetComponent<PlayerStats>();
+            PlayerStatsManager playerStats = other.GetComponent<PlayerStatsManager>();
 
             if (playerStats != null)
             {

@@ -11,6 +11,11 @@ namespace ZV
         Collider damageCollider;
         public bool enabledDamageColliderOnStartUp = false;
 
+        [Header("Poise")]
+        public float poiseBreak;
+        public float offensivePoiseBonus;
+
+        [Header("Damage")]
         public int currentWeaponDamage = 25;
 
         private void Awake()
@@ -35,7 +40,7 @@ namespace ZV
         {
             if(collision.tag == "Player")
             {
-                PlayerStats playerStats = collision.GetComponent<PlayerStats>();
+                PlayerStatsManager playerStats = collision.GetComponent<PlayerStatsManager>();
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
@@ -61,7 +66,18 @@ namespace ZV
 
                 if(playerStats != null)
                 {
-                    playerStats.TakeDamage(currentWeaponDamage);
+                    playerStats.poiseResetTimer = playerStats.totalPoiseResetTime;
+                    playerStats.totalPoiseDefence = playerStats.totalPoiseDefence - poiseBreak;
+                    Debug.Log("Player's Poise is currently " + playerStats.totalPoiseDefence);
+
+                    if (playerStats.totalPoiseDefence > poiseBreak)
+                    {
+                        playerStats.TakeDamageNoAnimation(currentWeaponDamage);
+                    }
+                    else
+                    {
+                        playerStats.TakeDamage(currentWeaponDamage);
+                    }
                 }
             }
 
@@ -93,7 +109,17 @@ namespace ZV
 
                 if (enemyStats != null)
                 {
-                    enemyStats.TakeDamage(currentWeaponDamage);
+                    enemyStats.poiseResetTimer = enemyStats.totalPoiseResetTime;
+                    enemyStats.totalPoiseDefence = enemyStats.totalPoiseDefence - poiseBreak;
+
+                    if(enemyStats.totalPoiseDefence > poiseBreak)
+                    {
+                        enemyStats.TakeDamageNoAnimation(currentWeaponDamage);
+                    }
+                    else
+                    {
+                        enemyStats.TakeDamage(currentWeaponDamage);
+                    }
                 }
             }
         }

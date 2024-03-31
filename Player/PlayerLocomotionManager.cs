@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class PlayerLocomotion : MonoBehaviour
+    public class PlayerLocomotionManager : MonoBehaviour
     {
         CameraHandler cameraHandler;
         PlayerManager playerManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         Transform cameraObject;
         InputHandler inputHandler;
         public Vector3 moveDirection;
@@ -46,10 +46,10 @@ namespace ZV
             cameraHandler = FindFirstObjectByType<CameraHandler>();
             // moved from start
             playerManager = GetComponent<PlayerManager>();
-            playerStats = GetComponent<PlayerStats>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             
         }
 
@@ -148,7 +148,7 @@ namespace ZV
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
-                playerStats.TakeStaminaDamage(sprintStaminaCost);
+                playerStatsManager.TakeStaminaDamage(sprintStaminaCost);
             }
             else
             {
@@ -180,11 +180,11 @@ namespace ZV
         public void HandleRollingAndSprinting(float delta)
         {
             // so we cant roll if we are attacking or interacting with a lever
-            if (playerAnimatorManager.anim.GetBool("isInteracting"))
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
 
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             if(inputHandler.rollFlag)
@@ -198,12 +198,12 @@ namespace ZV
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
-                    playerStats.TakeStaminaDamage(rollStaminaCost);
+                    playerStatsManager.TakeStaminaDamage(rollStaminaCost);
                 }
                 else
                 {
                     playerAnimatorManager.PlayTargetAnimation("Backstep", true);
-                    playerStats.TakeStaminaDamage(backstepStaminaCost);
+                    playerStatsManager.TakeStaminaDamage(backstepStaminaCost);
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace ZV
                 return;
 
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             if (inputHandler.jump_Input)

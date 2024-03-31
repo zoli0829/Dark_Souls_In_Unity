@@ -7,8 +7,8 @@ namespace ZV
 {
     public class WeaponInventorySlot : MonoBehaviour
     {
-        PlayerInventory playerInventory;
-        WeaponSlotManager weaponSlotManager;
+        PlayerInventoryManager playerInventory;
+        PlayerWeaponSlotManager weaponSlotManager;
         UIManager uiManager;
 
         public Image icon;
@@ -16,9 +16,9 @@ namespace ZV
 
         private void Awake()
         {
-            playerInventory = FindFirstObjectByType<PlayerInventory>();
+            playerInventory = FindFirstObjectByType<PlayerInventoryManager>();
             uiManager = FindFirstObjectByType<UIManager>();
-            weaponSlotManager = FindFirstObjectByType<WeaponSlotManager>();
+            weaponSlotManager = FindFirstObjectByType<PlayerWeaponSlotManager>();
         }
 
         public void AddItem(WeaponItem newItem)

@@ -11,7 +11,7 @@ namespace ZV
 
         private void Awake()
         {
-            anim = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             enemyManager = GetComponentInParent<EnemyManager>();
             enemyStats = GetComponentInParent<EnemyStats>();
         }
@@ -24,38 +24,38 @@ namespace ZV
 
         public void CanRotate()
         {
-            anim.SetBool("canRotate", true);
+            animator.SetBool("canRotate", true);
         }
 
         public void StopRotation()
         {
-            anim.SetBool("canRotate", false);
+            animator.SetBool("canRotate", false);
         }
 
         public void EnableCombo()
         {
-            anim.SetBool("canDoCombo", true);
+            animator.SetBool("canDoCombo", true);
         }
 
         public void DisableCombo()
         {
-            anim.SetBool("canDoCombo", false);
+            animator.SetBool("canDoCombo", false);
         }
 
         public void EnableIsInvulnerable()
         {
-            anim.SetBool("isInvulnerable", true);
+            animator.SetBool("isInvulnerable", true);
         }
 
         public void DisableIsInvulnerable()
         {
-            anim.SetBool("isInvulnerable", false);
+            animator.SetBool("isInvulnerable", false);
         }
 
         public void AwardSoulsOnDeath()
         {
             // Scan for every player in the scene, award them souls, for now only for 1 player
-            PlayerStats playerStats = FindFirstObjectByType<PlayerStats>();
+            PlayerStatsManager playerStats = FindFirstObjectByType<PlayerStatsManager>();
             SoulCounter soulCounter = FindFirstObjectByType<SoulCounter>();
 
             if (playerStats != null)
@@ -93,14 +93,14 @@ namespace ZV
         {
             float delta = Time.deltaTime;
             enemyManager.enemyRigidBody.drag = 0;
-            Vector3 deltaPosition = anim.deltaPosition;
+            Vector3 deltaPosition = animator.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             enemyManager.enemyRigidBody.velocity = velocity;
 
             if(enemyManager.isRotatingWithRootMotion)
             {
-                enemyManager.transform.rotation *= anim.deltaRotation;
+                enemyManager.transform.rotation *= animator.deltaRotation;
             }
         }
     }

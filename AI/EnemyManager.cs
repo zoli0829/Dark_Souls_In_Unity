@@ -12,7 +12,7 @@ namespace ZV
         EnemyStats enemyStats;
 
         public State currentState;
-        public CharacterStats currentTarget;
+        public CharacterStatsManager currentTarget;
         public NavMeshAgent navMeshAgent;
         public Rigidbody enemyRigidBody;
 
@@ -56,12 +56,12 @@ namespace ZV
             HandleRecoveryTimer();
             HandleStateMachine();
 
-            isRotatingWithRootMotion = enemyAnimationManager.anim.GetBool("isRotatingWithRootMotion");
-            isInteracting = enemyAnimationManager.anim.GetBool("isInteracting");
-            isInvulnerable = enemyAnimationManager.anim.GetBool("isInvulnerable");
-            canDoCombo = enemyAnimationManager.anim.GetBool("canDoCombo");
-            canRotate = enemyAnimationManager.anim.GetBool("canRotate");
-            enemyAnimationManager.anim.SetBool("isDead", enemyStats.isDead);
+            isRotatingWithRootMotion = enemyAnimationManager.animator.GetBool("isRotatingWithRootMotion");
+            isInteracting = enemyAnimationManager.animator.GetBool("isInteracting");
+            isInvulnerable = enemyAnimationManager.animator.GetBool("isInvulnerable");
+            canDoCombo = enemyAnimationManager.animator.GetBool("canDoCombo");
+            canRotate = enemyAnimationManager.animator.GetBool("canRotate");
+            enemyAnimationManager.animator.SetBool("isDead", enemyStats.isDead);
         }
 
         private void LateUpdate()

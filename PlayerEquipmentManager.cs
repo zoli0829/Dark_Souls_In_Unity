@@ -7,8 +7,8 @@ namespace ZV
     public class PlayerEquipmentManager : MonoBehaviour
     {
         InputHandler inputHandler;
-        PlayerInventory playerInventory;
-        PlayerStats playerStats;
+        PlayerInventoryManager playerInventoryManager;
+        PlayerStatsManager playerStatsManager;
 
         [Header("Equipment Model Changers")]
         // HEAD EQUIPMENT
@@ -44,9 +44,9 @@ namespace ZV
 
         private void Awake()
         {
-            inputHandler = GetComponentInParent<InputHandler>();
-            playerInventory = GetComponentInParent<PlayerInventory>();
-            playerStats = GetComponentInParent<PlayerStats>();
+            inputHandler = GetComponent<InputHandler>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
 
             helmetModelChanger = GetComponentInChildren<HelmetModelChanger>();
             torsoModelChanger = GetComponentInChildren<TorsoModelChanger>();
@@ -71,13 +71,13 @@ namespace ZV
             // HEAD EQUIPMENT
             helmetModelChanger.UnEquipAllHelmetModels();
 
-            if(playerInventory.currentHelmetEquipment != null)
+            if(playerInventoryManager.currentHelmetEquipment != null)
             {
                 nakedHeadModel.SetActive(false);
-                helmetModelChanger.EquipHelmetModelByName(playerInventory.currentHelmetEquipment.helmetModelName);
-                playerStats.physicalDamageAbsorptionHead = playerInventory.currentHelmetEquipment.physicalDefense;
+                helmetModelChanger.EquipHelmetModelByName(playerInventoryManager.currentHelmetEquipment.helmetModelName);
+                playerStatsManager.physicalDamageAbsorptionHead = playerInventoryManager.currentHelmetEquipment.physicalDefense;
 
-                Debug.Log("Helmet Absorption is " + playerStats.physicalDamageAbsorptionHead + "%");
+                Debug.Log("Helmet Absorption is " + playerStatsManager.physicalDamageAbsorptionHead + "%");
             }
             else
             {
@@ -85,7 +85,7 @@ namespace ZV
                 nakedHeadModel.SetActive(true);
 
                 // Setting the default physical damage absorption
-                playerStats.physicalDamageAbsorptionHead = 0;
+                playerStatsManager.physicalDamageAbsorptionHead = 0;
             }
 
             // TORSO EQUIPMENT
@@ -93,14 +93,14 @@ namespace ZV
             upperLeftArmModelChanger.UnEquipAllArmModels();
             upperRightArmModelChanger.UnEquipAllArmModels();
 
-            if(playerInventory.currentTorsoEqipment != null)
+            if(playerInventoryManager.currentTorsoEqipment != null)
             {
-                torsoModelChanger.EquipTorsoModelByName(playerInventory.currentTorsoEqipment.torsoModelName);
-                upperLeftArmModelChanger.EquiparmModelByName(playerInventory.currentTorsoEqipment.upperLeftArmModelName);
-                upperRightArmModelChanger.EquiparmModelByName(playerInventory.currentTorsoEqipment.upperRightArmModelName);
-                playerStats.physicalDamageAbsorptionBody = playerInventory.currentTorsoEqipment.physicalDefense;
+                torsoModelChanger.EquipTorsoModelByName(playerInventoryManager.currentTorsoEqipment.torsoModelName);
+                upperLeftArmModelChanger.EquiparmModelByName(playerInventoryManager.currentTorsoEqipment.upperLeftArmModelName);
+                upperRightArmModelChanger.EquiparmModelByName(playerInventoryManager.currentTorsoEqipment.upperRightArmModelName);
+                playerStatsManager.physicalDamageAbsorptionBody = playerInventoryManager.currentTorsoEqipment.physicalDefense;
 
-                Debug.Log("Body Absorption is " + playerStats.physicalDamageAbsorptionBody + "%");
+                Debug.Log("Body Absorption is " + playerStatsManager.physicalDamageAbsorptionBody + "%");
             }
             else
             {
@@ -110,21 +110,21 @@ namespace ZV
                 upperRightArmModelChanger.EquiparmModelByName(nakedUpperRightArm);
 
                 // Setting the default physical damage absorption
-                playerStats.physicalDamageAbsorptionBody = 0;
+                playerStatsManager.physicalDamageAbsorptionBody = 0;
             }
             // LEG EQUIPMENT
             hipModelChanger.UnEquipAllHipModels();
             leftLegModelChanger.UnEquipAllLeftLegModels();
             rightLegModelChanger.UnEquipAllRightLegModels();
 
-            if(playerInventory.currentLegEquipment != null)
+            if(playerInventoryManager.currentLegEquipment != null)
             {
-                hipModelChanger.EquipHipModelByName(playerInventory.currentLegEquipment.hipModelName);
-                leftLegModelChanger.EquipLeftLegModelByName(playerInventory.currentLegEquipment.leftLegModelName);
-                rightLegModelChanger.EquipRightLegModelByName(playerInventory.currentLegEquipment.rightLegModelName);
-                playerStats.physicalDamageAbsorptionLegs = playerInventory.currentLegEquipment.physicalDefense;
+                hipModelChanger.EquipHipModelByName(playerInventoryManager.currentLegEquipment.hipModelName);
+                leftLegModelChanger.EquipLeftLegModelByName(playerInventoryManager.currentLegEquipment.leftLegModelName);
+                rightLegModelChanger.EquipRightLegModelByName(playerInventoryManager.currentLegEquipment.rightLegModelName);
+                playerStatsManager.physicalDamageAbsorptionLegs = playerInventoryManager.currentLegEquipment.physicalDefense;
 
-                Debug.Log("Leg Absorption is " + playerStats.physicalDamageAbsorptionLegs + "%");
+                Debug.Log("Leg Absorption is " + playerStatsManager.physicalDamageAbsorptionLegs + "%");
             }
             else
             {
@@ -134,7 +134,7 @@ namespace ZV
                 rightLegModelChanger.EquipRightLegModelByName(nakedRightLeg);
 
                 // Setting the default physical damage absorption
-                playerStats.physicalDamageAbsorptionLegs = 0;
+                playerStatsManager.physicalDamageAbsorptionLegs = 0;
             }
 
             // HAND EQUIPMENT
@@ -143,15 +143,15 @@ namespace ZV
             leftHandModelChanger.UnEquipAllArmModels();
             rightHandModelChanger.UnEquipAllArmModels();
 
-            if(playerInventory.currentHandEquipment != null)
+            if(playerInventoryManager.currentHandEquipment != null)
             {
-                lowerLeftArmModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.lowerLeftArmModelName);
-                lowerRightArmModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.lowerRightArmModelName);
-                leftHandModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.leftHandModelName);
-                rightHandModelChanger.EquiparmModelByName(playerInventory.currentHandEquipment.rightHandModelName);
-                playerStats.physicalDamageAbsorptionHands = playerInventory.currentHandEquipment.physicalDefense;
+                lowerLeftArmModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.lowerLeftArmModelName);
+                lowerRightArmModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.lowerRightArmModelName);
+                leftHandModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.leftHandModelName);
+                rightHandModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.rightHandModelName);
+                playerStatsManager.physicalDamageAbsorptionHands = playerInventoryManager.currentHandEquipment.physicalDefense;
 
-                Debug.Log("Hand Absorption is " + playerStats.physicalDamageAbsorptionHands + "%");
+                Debug.Log("Hand Absorption is " + playerStatsManager.physicalDamageAbsorptionHands + "%");
             }
             else
             {
@@ -161,7 +161,7 @@ namespace ZV
                 rightHandModelChanger.EquiparmModelByName(nakedRightHand);
 
                 // Setting the default physical damage absorption
-                playerStats.physicalDamageAbsorptionHands = 0;
+                playerStatsManager.physicalDamageAbsorptionHands = 0;
             }
         }
 
@@ -170,11 +170,11 @@ namespace ZV
             // WILL HAVE TO CHANGE THAT RIGHT WEAPON WILL ALSO CAN BLOCK
             if(inputHandler.twoHandFlag)
             {
-                blockingCollider.SetColliderDamageAbsorption(playerInventory.rightWeapon);
+                blockingCollider.SetColliderDamageAbsorption(playerInventoryManager.rightWeapon);
             }
             else
             {
-                blockingCollider.SetColliderDamageAbsorption(playerInventory.leftWeapon);
+                blockingCollider.SetColliderDamageAbsorption(playerInventoryManager.leftWeapon);
             }
             
             blockingCollider.EnableBlockingCollider();

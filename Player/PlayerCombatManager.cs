@@ -4,16 +4,17 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class PlayerAttacker : MonoBehaviour
+    public class PlayerCombatManager : MonoBehaviour
     {
-        PlayerAnimatorManager animatorHandler;
-        PlayerEquipmentManager playerEquipmentManager;
-        PlayerManager playerManager;
-        PlayerStats playerStats;
-        PlayerInventory playerInventory;
         InputHandler inputHandler;
+        PlayerManager playerManager;
+        PlayerAnimatorManager playerAnimatorManager;
+        PlayerEquipmentManager playerEquipmentManager;
+        PlayerStatsManager playerStatsManager;
+        PlayerInventoryManager playerInventoryManager;
         CameraHandler cameraHandler;
-        WeaponSlotManager weaponSlotManager;
+        PlayerWeaponSlotManager playerWeaponSlotManager;
+
         public string lastAttack;
 
         LayerMask backStabLayer = 1 << 12;
@@ -21,37 +22,37 @@ namespace ZV
 
         private void Awake()
         {
-            animatorHandler = GetComponent<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-            playerManager = GetComponentInParent<PlayerManager>();
-            playerStats = GetComponentInParent<PlayerStats>();
-            playerInventory = GetComponentInParent<PlayerInventory>();
-            weaponSlotManager = GetComponent<WeaponSlotManager>();
-            inputHandler = GetComponentInParent<InputHandler>();
+            playerManager = GetComponent<PlayerManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+            inputHandler = GetComponent<InputHandler>();
             cameraHandler = FindFirstObjectByType<CameraHandler>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
         {
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             if (inputHandler.comboFlag)
             {
-                animatorHandler.anim.SetBool("canDoCombo", false);
+                playerAnimatorManager.animator.SetBool("canDoCombo", false);
 
                 if (lastAttack == weapon.oh_light_attack_01)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.oh_light_attack_02, true);
+                    playerAnimatorManager.PlayTargetAnimation(weapon.oh_light_attack_02, true);
                 }
                 else if(lastAttack == weapon.th_light_attack_01)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.th_light_attack_02, true);
+                    playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_02, true);
                 }
                 else if(lastAttack == weapon.th_light_attack_02)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.th_light_attack_03, true);
+                    playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_03, true);
                 }
             }
         }
@@ -59,19 +60,19 @@ namespace ZV
         public void HandleLightAttack(WeaponItem weapon)
         {
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
 
             if (inputHandler.twoHandFlag)
             {
-                animatorHandler.PlayTargetAnimation(weapon.th_light_attack_01, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_01, true);
                 lastAttack = weapon.th_light_attack_01;
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(weapon.oh_light_attack_01, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.oh_light_attack_01, true);
                 lastAttack = weapon.oh_light_attack_01;
             }
         }
@@ -79,10 +80,10 @@ namespace ZV
         public void HandleHeavyAttack(WeaponItem weapon)
         {
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
 
             if (inputHandler.twoHandFlag)
             {
@@ -90,7 +91,7 @@ namespace ZV
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(weapon.oh_heavy_attack_01, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.oh_heavy_attack_01, true);
                 lastAttack = weapon.oh_heavy_attack_01;
             }
         }
@@ -99,13 +100,13 @@ namespace ZV
 
         public void HandleRBAction()
         {
-            if (playerInventory.rightWeapon.isMeleeWeapon)
+            if (playerInventoryManager.rightWeapon.isMeleeWeapon)
             {
                 PerformRBMeleeAction();
             }
-            else if(playerInventory.rightWeapon.isSpellCaster || playerInventory.rightWeapon.isFaithCaster || playerInventory.rightWeapon.isPyroCaster)
+            else if(playerInventoryManager.rightWeapon.isSpellCaster || playerInventoryManager.rightWeapon.isFaithCaster || playerInventoryManager.rightWeapon.isPyroCaster)
             {
-                PerformRBMagicAction(playerInventory.rightWeapon);
+                PerformRBMagicAction(playerInventoryManager.rightWeapon);
             }
         }
 
@@ -116,11 +117,11 @@ namespace ZV
 
         public void HandleLTAction()
         {
-            if(playerInventory.leftWeapon.isShieldWeapon)
+            if(playerInventoryManager.leftWeapon.isShieldWeapon)
             {
                 PerformLTWeaponArt(inputHandler.twoHandFlag);
             }
-            else if(playerInventory.leftWeapon.isMeleeWeapon)
+            else if(playerInventoryManager.leftWeapon.isMeleeWeapon)
             {
                 // do a light attack
             }
@@ -135,7 +136,7 @@ namespace ZV
             if (playerManager.canDoCombo)
             {
                 inputHandler.comboFlag = true;
-                HandleWeaponCombo(playerInventory.rightWeapon);
+                HandleWeaponCombo(playerInventoryManager.rightWeapon);
                 inputHandler.comboFlag = false;
             }
             else
@@ -146,8 +147,8 @@ namespace ZV
                 if (playerManager.canDoCombo)
                     return;
 
-                animatorHandler.anim.SetBool("isUsingRightHand", true);
-                HandleLightAttack(playerInventory.rightWeapon);
+                playerAnimatorManager.animator.SetBool("isUsingRightHand", true);
+                HandleLightAttack(playerInventoryManager.rightWeapon);
             }
         }
 
@@ -158,15 +159,15 @@ namespace ZV
 
             if(weapon.isFaithCaster)
             {
-                if(playerInventory.currentSpell != null && playerInventory.currentSpell.isFaithSpell)
+                if(playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isFaithSpell)
                 {
-                    if(playerStats.currentFocusPoints >= playerInventory.currentSpell.focusPointCost)
+                    if(playerStatsManager.currentFocusPoints >= playerInventoryManager.currentSpell.focusPointCost)
                     {
-                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                        playerInventoryManager.currentSpell.AttemptToCastSpell(playerAnimatorManager, playerStatsManager, playerWeaponSlotManager);
                     }
                     else
                     {
-                        animatorHandler.PlayTargetAnimation("Shrug", true);
+                        playerAnimatorManager.PlayTargetAnimation("Shrug", true);
                     }
                 }
             }
@@ -183,13 +184,13 @@ namespace ZV
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_art, true);
+                playerAnimatorManager.PlayTargetAnimation(playerInventoryManager.leftWeapon.weapon_art, true);
             }
         }
 
         private void SuccessfullyCastSpell()
         {
-            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
+            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager);
         }
 
         #endregion
@@ -204,7 +205,7 @@ namespace ZV
             if (playerManager.isBlocking)
                 return;
 
-            animatorHandler.PlayTargetAnimation("Block Start", false, true);
+            playerAnimatorManager.PlayTargetAnimation("Block Start", false, true);
             playerEquipmentManager.OpenBlockingCollider();
             playerManager.isBlocking = true;
         }
@@ -214,7 +215,7 @@ namespace ZV
         public void AttemptBackstabOrRipose()
         {
             // Check if we have stamina, if we do not, return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             RaycastHit hit;
@@ -223,7 +224,7 @@ namespace ZV
                 transform.TransformDirection(Vector3.forward), out hit, 0.5f, backStabLayer))
             {
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
 
                 if(enemyCharacterManager != null)
                 {
@@ -240,11 +241,11 @@ namespace ZV
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                     playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendindCriticalDamage = criticalDamage;
 
                     // play animation
-                    animatorHandler.PlayTargetAnimation("Back Stab", true);
+                    playerAnimatorManager.PlayTargetAnimation("Back Stab", true);
 
                     // make enemy play animation
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Back Stabbed", true);
@@ -259,7 +260,7 @@ namespace ZV
             {
                 // CHECK FOR TEAM ID 
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
 
                 if(enemyCharacterManager != null && enemyCharacterManager.canBeReposted)
                 {
@@ -273,10 +274,10 @@ namespace ZV
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                     playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendindCriticalDamage = criticalDamage;
 
-                    animatorHandler.PlayTargetAnimation("Riposte", true);
+                    playerAnimatorManager.PlayTargetAnimation("Riposte", true);
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Reposted", true);
                 }
             }

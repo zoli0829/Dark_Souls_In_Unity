@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class PlayerStats : CharacterStats
+    public class PlayerStatsManager : CharacterStatsManager
     {
         PlayerManager playerManager;
 
         HealthBar healthBar;
         StaminaBar staminaBar;
         FocusPointBar focusPointBar;
-        PlayerAnimatorManager animatorHandler;
+        PlayerAnimatorManager playerAnimatorManager;
 
         [SerializeField] float staminaRegenerationAmount = 25;
         [SerializeField] float staminaRegenTimer = 0; 
@@ -22,7 +22,7 @@ namespace ZV
             healthBar = FindAnyObjectByType<HealthBar>();
             staminaBar = FindAnyObjectByType<StaminaBar>();
             focusPointBar = FindAnyObjectByType<FocusPointBar>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
         private void Start()
@@ -39,6 +39,18 @@ namespace ZV
             currentFocusPoints = maxFocusPoints;
             focusPointBar.SetMaxFocusPoints(maxFocusPoints);
             focusPointBar.SetCurrentFocusPoins(currentFocusPoints);
+        }
+
+        public override void HandlePoiseResetTimer()
+        {
+            if (poiseResetTimer > 0)
+            {
+                poiseResetTimer -= Time.deltaTime;
+            }
+            else if (poiseResetTimer <= 0 && !playerManager.isInteracting)
+            {
+                totalPoiseDefence = armorPoiseBonus;
+            }
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -66,13 +78,13 @@ namespace ZV
 
             base.TakeDamage(damage, damageAnimation = "Damage_01");
             healthBar.SetCurrentHealth(currentHealth);
-            animatorHandler.PlayTargetAnimation(damageAnimation, true);
+            playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if(currentHealth <= 0)
             {
                 currentHealth = 0;
                 isDead = true;
-                animatorHandler.PlayTargetAnimation("Dead_01", true);
+                playerAnimatorManager.PlayTargetAnimation("Dead_01", true);
                 // HANDLE PLAYER DEATH
             }
         }

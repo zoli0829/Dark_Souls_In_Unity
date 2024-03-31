@@ -13,7 +13,7 @@ namespace ZV
 
         [SerializeField] HandEquipmentSlotUI[] handEquipmentSlotUIs;
 
-        public void LoadWeaponsOnEquipmentScreen(PlayerInventory playerInventory)
+        public void LoadWeaponsOnEquipmentScreen(PlayerInventoryManager playerInventory)
         {
             for (int i = 0; i < handEquipmentSlotUIs.Length; i++)
             {

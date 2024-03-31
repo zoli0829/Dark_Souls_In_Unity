@@ -6,8 +6,8 @@ namespace ZV
 {
     public class PlayerEffectsManager : MonoBehaviour
     {
-        PlayerStats playerStats;
-        WeaponSlotManager weaponSlotManager;
+        PlayerStatsManager playerStatsManager;
+        PlayerWeaponSlotManager playerWeaponSlotManager;
 
         public GameObject currentParticleFX; // The particles that will play of the current effect that is effecting the player (drinking estus, poison ect)
         public GameObject instantiatedFXModel;
@@ -15,16 +15,16 @@ namespace ZV
 
         private void Awake()
         {
-            playerStats = GetComponentInParent<PlayerStats>();
-            weaponSlotManager = GetComponent<WeaponSlotManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
         }
 
         public void HealPlayerFromEffect()
         {
-            playerStats.HealPlayer(amountToBeHealed);
-            GameObject healParticles = Instantiate(currentParticleFX, playerStats.transform);
+            playerStatsManager.HealPlayer(amountToBeHealed);
+            GameObject healParticles = Instantiate(currentParticleFX, playerStatsManager.transform);
             Destroy(instantiatedFXModel.gameObject);
-            weaponSlotManager.LoadBothWeaponsOnSlots();
+            playerWeaponSlotManager.LoadBothWeaponsOnSlots();
         }
     }
 }

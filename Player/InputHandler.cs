@@ -44,16 +44,15 @@ namespace ZV
         public Transform criticalAttackRayCastStartPoint;
 
         PlayerControls inputActions;
-        PlayerAttacker playerAttacker;
-        PlayerInventory playerInventory;
+        PlayerCombatManager playerCombatManager;
+        PlayerInventoryManager playerInventoryManager;
         PlayerManager playerManager;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerEffectsManager playerEffectsManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         BlockingCollider blockingCollider;
-        WeaponSlotManager weaponSlotManager;
+        PlayerWeaponSlotManager playerWeaponSlotManager;
         CameraHandler cameraHandler;
-        PlayerAnimatorManager animatorHandler;
         UIManager uiManager;
 
         Vector2 movementInput;
@@ -61,17 +60,17 @@ namespace ZV
 
         private void Awake()
         {
-            playerAttacker = GetComponentInChildren<PlayerAttacker>();
-            playerInventory = GetComponent<PlayerInventory>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerManager = GetComponent<PlayerManager>();
-            playerStats = GetComponent<PlayerStats>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
-            playerEffectsManager = GetComponentInChildren<PlayerEffectsManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
             blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindFirstObjectByType<UIManager>();
             cameraHandler = FindAnyObjectByType<CameraHandler>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
-            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
         }
 
         public void OnEnable()
@@ -139,13 +138,13 @@ namespace ZV
             {
                 rollInputTimer += delta;
 
-                if (playerStats.currentStamina <= 0)
+                if (playerStatsManager.currentStamina <= 0)
                 {
                     b_Input = false;
                     sprintFlag = false;
                 }
 
-                if(moveAmount > 0.5f && playerStats.currentStamina > 0)
+                if(moveAmount > 0.5f && playerStatsManager.currentStamina > 0)
                 {
                     sprintFlag = true;
                 }
@@ -167,7 +166,7 @@ namespace ZV
         {
             if(rb_Input)
             {
-                playerAttacker.HandleRBAction();
+                playerCombatManager.HandleRBAction();
             }
 
             if (rt_Input)
@@ -175,7 +174,7 @@ namespace ZV
                 if (playerManager.canDoCombo)
                 {
                     comboFlag = true;
-                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
+                    playerCombatManager.HandleWeaponCombo(playerInventoryManager.rightWeapon);
                     comboFlag = false;
                 }
                 else
@@ -186,14 +185,14 @@ namespace ZV
                     if (playerManager.canDoCombo)
                         return;
 
-                    animatorHandler.anim.SetBool("isUsingRightHand", true);
-                    playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+                    playerAnimatorManager.animator.SetBool("isUsingRightHand", true);
+                    playerCombatManager.HandleHeavyAttack(playerInventoryManager.rightWeapon);
                 }
             }
 
             if(lb_Input)
             {
-                playerAttacker.HandleLBAction();
+                playerCombatManager.HandleLBAction();
             }
             else
             {
@@ -215,7 +214,7 @@ namespace ZV
                 // else handle light attack if melee weapon
                 else
                 {
-                    playerAttacker.HandleLTAction();
+                    playerCombatManager.HandleLTAction();
                 }
             }
         }
@@ -224,11 +223,11 @@ namespace ZV
         {
             if (d_Pad_Right)
             {
-                playerInventory.ChangeRightWeapon();
+                playerInventoryManager.ChangeRightWeapon();
             }
             else if ( d_Pad_Left)
             {
-                playerInventory.ChangeLeftWeapon();
+                playerInventoryManager.ChangeLeftWeapon();
             }
         }
 
@@ -306,12 +305,12 @@ namespace ZV
 
                 if(twoHandFlag)
                 {
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                    playerWeaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
                 }
                 else
                 {
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
+                    playerWeaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
+                    playerWeaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.leftWeapon, true);
                 }
             }
         }
@@ -321,7 +320,7 @@ namespace ZV
             if(critical_Attack_Input)
             {
                 critical_Attack_Input = false;
-                playerAttacker.AttemptBackstabOrRipose();
+                playerCombatManager.AttemptBackstabOrRipose();
             }
         }
 
@@ -330,7 +329,7 @@ namespace ZV
             if(x_Input)
             {
                 x_Input = false;
-                playerInventory.currentConsumableItem.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
+                playerInventoryManager.currentConsumableItem.AttemptToConsumeItem(playerAnimatorManager, playerWeaponSlotManager, playerEffectsManager);
             }
         }
     }
