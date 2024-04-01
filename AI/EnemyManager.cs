@@ -10,6 +10,7 @@ namespace ZV
         EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimationManager;
         EnemyStatsManager enemyStatsManager;
+        EnemyEffectsManager enemyEffectsManager;
 
         public State currentState;
         public CharacterStatsManager currentTarget;
@@ -36,6 +37,7 @@ namespace ZV
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimationManager = GetComponent<EnemyAnimatorManager>();
             enemyStatsManager = GetComponent<EnemyStatsManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
             enemyRigidBody = GetComponent<Rigidbody>();
             backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
@@ -58,6 +60,11 @@ namespace ZV
             canDoCombo = enemyAnimationManager.animator.GetBool("canDoCombo");
             canRotate = enemyAnimationManager.animator.GetBool("canRotate");
             enemyAnimationManager.animator.SetBool("isDead", enemyStatsManager.isDead);
+        }
+
+        private void FixedUpdate()
+        {
+            // enemyEffectsManager.HandleAllBuildUpEffects();
         }
 
         private void LateUpdate()

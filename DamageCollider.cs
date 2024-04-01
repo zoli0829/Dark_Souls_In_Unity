@@ -41,18 +41,19 @@ namespace ZV
             if(collision.tag == "Player")
             {
                 PlayerStatsManager playerStats = collision.GetComponent<PlayerStatsManager>();
-                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                CharacterManager playerCharacterManager = collision.GetComponent<CharacterManager>();
+                CharacterEffectsManager playerEffectsManager = collision.GetComponent<CharacterEffectsManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
-                if(enemyCharacterManager != null)
+                if(playerCharacterManager != null)
                 {
-                    if(enemyCharacterManager.isParrying)
+                    if(playerCharacterManager.isParrying)
                     {
                         // CHECK HERE IF WE ARE PARRYABLE
                         characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
                         return;
                     }
-                    else if(shield != null && enemyCharacterManager.isBlocking)
+                    else if(shield != null && playerCharacterManager.isBlocking)
                     {
                         float physicalDamageAfterBlock = currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
 
@@ -68,7 +69,10 @@ namespace ZV
                 {
                     playerStats.poiseResetTimer = playerStats.totalPoiseResetTime;
                     playerStats.totalPoiseDefence = playerStats.totalPoiseDefence - poiseBreak;
-                    Debug.Log("Player's Poise is currently " + playerStats.totalPoiseDefence);
+
+                    // DETECTS WHERE ON THE COLLIDER OUR WEAPON FIRST MAKES CONTACT
+                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    playerEffectsManager.PlayBloodSplatterFX(contactPoint);
 
                     if (playerStats.totalPoiseDefence > poiseBreak)
                     {
@@ -85,6 +89,7 @@ namespace ZV
             {
                 EnemyStatsManager enemyStats = collision.GetComponent<EnemyStatsManager>();
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                CharacterEffectsManager enemyEffectsManager = collision.GetComponent<CharacterEffectsManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
                 if (enemyCharacterManager != null)
@@ -112,7 +117,11 @@ namespace ZV
                     enemyStats.poiseResetTimer = enemyStats.totalPoiseResetTime;
                     enemyStats.totalPoiseDefence = enemyStats.totalPoiseDefence - poiseBreak;
 
-                    if(enemyStats.totalPoiseDefence > poiseBreak)
+                    // DETECTS WHERE ON THE COLLIDER OUR WEAPON FIRST MAKES CONTACT
+                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    enemyEffectsManager.PlayBloodSplatterFX(contactPoint);
+
+                    if (enemyStats.totalPoiseDefence > poiseBreak)
                     {
                         enemyStats.TakeDamageNoAnimation(currentWeaponDamage);
                     }

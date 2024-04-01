@@ -11,6 +11,7 @@ namespace ZV
         Animator animator;
         CameraHandler cameraHandler;
         PlayerStatsManager playerStatsManager;
+        PlayerEffectsManager playerEffectsManager;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerLocomotionManager playerLocomotion;
 
@@ -24,6 +25,7 @@ namespace ZV
             interactableUI = FindFirstObjectByType<InteractableUI>();
             backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
 
             // moved these below from the start 
             inputHandler = GetComponent<InputHandler>();
@@ -60,6 +62,8 @@ namespace ZV
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
             playerLocomotion.HandleRotation(delta);
+
+            //playerEffectsManager.HandleAllBuildUpEffects();
         }
 
         private void LateUpdate()
