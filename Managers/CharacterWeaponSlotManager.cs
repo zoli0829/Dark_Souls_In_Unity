@@ -17,5 +17,12 @@ namespace ZV
         [Header("Damage Colliders")]
         public DamageCollider leftHandDamageCollider;
         public DamageCollider rightHandDamageCollider;
+
+        protected virtual void Awake()
+        {
+            leftHandSlot = GetComponentInChildren<WeaponHolderSlot>();
+            rightHandSlot = GetComponentInChildren<WeaponHolderSlot>();
+            backSlot = GetComponentInChildren<WeaponHolderSlot>();
+        }
     }
 }

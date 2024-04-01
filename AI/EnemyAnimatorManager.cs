@@ -7,12 +7,15 @@ namespace ZV
     public class EnemyAnimatorManager : AnimatorManager
     {
         EnemyManager enemyManager;
+        EnemyEffectsManager enemyEffectsManager;
+
         protected override void Awake()
         {
             base.Awake();
 
             animator = GetComponent<Animator>();
             enemyManager = GetComponent<EnemyManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
         }
 
         public void AwardSoulsOnDeath()
@@ -30,6 +33,11 @@ namespace ZV
                     soulCounter.SetSoulCountText(playerStats.soulCount);
                 }
             }
+        }
+
+        public void PlayWeaponTrailFX()
+        {
+            enemyEffectsManager.PlayWeaponFX(false);
         }
 
         private void OnAnimatorMove()

@@ -10,10 +10,14 @@ namespace ZV
         public WeaponItem leftHandWeapon;
 
         EnemyStatsManager enemyStatsManager;
+        EnemyEffectsManager enemyEffectsManager;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             enemyStatsManager = GetComponent<EnemyStatsManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
 
             LoadWeaponHolderSlots();
         }
@@ -74,11 +78,13 @@ namespace ZV
             {
                 leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 leftHandDamageCollider.characterManager = GetComponentInParent<CharacterManager>();
+                enemyEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
             }
             else
             {
                 rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 rightHandDamageCollider.characterManager = GetComponentInParent<CharacterManager>();
+                enemyEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
             }
         }
 

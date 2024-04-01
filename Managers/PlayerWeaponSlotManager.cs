@@ -12,18 +12,22 @@ namespace ZV
         PlayerManager playerManager;
         PlayerInventoryManager playerInventoryManager;
         PlayerStatsManager playerStatsManager;
+        PlayerEffectsManager playerEffectsManager;
 
         [Header("Attacking Weapon")]
         public WeaponItem attackingWeapon;
 
         
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             inputHandler = GetComponent<InputHandler>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerManager = GetComponent<PlayerManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerEffectsManager = GetComponent <PlayerEffectsManager>();
             animator = GetComponentInChildren<Animator>();
             quickSlotsUI = FindFirstObjectByType<QuickSlotsUI>();
 
@@ -122,6 +126,7 @@ namespace ZV
             leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             leftHandDamageCollider.currentWeaponDamage = playerInventoryManager.leftWeapon.baseDamage;
             leftHandDamageCollider.poiseBreak = playerInventoryManager.leftWeapon.poiseBreak;
+            playerEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
         }
 
         private void LoadRightWeaponDamageCollider()
@@ -129,6 +134,7 @@ namespace ZV
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             rightHandDamageCollider.currentWeaponDamage = playerInventoryManager.rightWeapon.baseDamage;
             rightHandDamageCollider.poiseBreak = playerInventoryManager.rightWeapon.poiseBreak;
+            playerEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
         }
 
         public void OpenDamageCollider()

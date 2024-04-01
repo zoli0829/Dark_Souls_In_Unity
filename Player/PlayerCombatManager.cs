@@ -14,6 +14,7 @@ namespace ZV
         PlayerInventoryManager playerInventoryManager;
         CameraHandler cameraHandler;
         PlayerWeaponSlotManager playerWeaponSlotManager;
+        PlayerEffectsManager playerEffectsManager;
 
         public string lastAttack;
 
@@ -28,6 +29,7 @@ namespace ZV
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
             inputHandler = GetComponent<InputHandler>();
             cameraHandler = FindFirstObjectByType<CameraHandler>();
         }
@@ -150,6 +152,9 @@ namespace ZV
                 playerAnimatorManager.animator.SetBool("isUsingRightHand", true);
                 HandleLightAttack(playerInventoryManager.rightWeapon);
             }
+
+            // PLAY FX
+            playerEffectsManager.PlayWeaponFX(false);
         }
 
         private void PerformRBMagicAction(WeaponItem weapon)
