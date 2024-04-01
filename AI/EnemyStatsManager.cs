@@ -4,19 +4,21 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class EnemyStats : CharacterStatsManager
+    public class EnemyStatsManager : CharacterStatsManager
     {
         EnemyManager enemyManager;
         EnemyAnimatorManager enemyAnimatorManager;
         public UIEnemyHealthBar enemyHealthBar;
-        public int soulsAwardedOnDeath = 50;
 
         private void Awake()
         {
             enemyManager = GetComponent<EnemyManager>();
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+            enemyHealthBar = GetComponentInChildren<UIEnemyHealthBar>();
+
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
+            
         }
 
         private void Start()
@@ -42,17 +44,11 @@ namespace ZV
             return maxHealth;
         }
 
-        public void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int damage)
         {
-            currentHealth -= damage;
+            base.TakeDamageNoAnimation(damage);
 
             enemyHealthBar.SetHealth(currentHealth);
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
         }
 
         public void BreakGuard()

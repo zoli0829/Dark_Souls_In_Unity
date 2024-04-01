@@ -19,6 +19,7 @@ namespace ZV
         public float currentFocusPoints;
 
         public int soulCount = 0;
+        public int soulsAwardedOnDeath = 50;
 
         [Header("Poise")]
         public float totalPoiseDefence; // TOTAL poise during damage calculation
@@ -67,6 +68,17 @@ namespace ZV
             Debug.Log("Total Damage Dealt " + finalDamage);
 
             if(currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
+        public virtual void TakeDamageNoAnimation(int damage)
+        {
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 isDead = true;

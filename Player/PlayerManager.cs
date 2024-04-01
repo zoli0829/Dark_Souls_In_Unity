@@ -18,16 +18,6 @@ namespace ZV
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
 
-        public bool isInteracting;
-
-        [Header("Player Flags")]
-        public bool isSprinting;
-        public bool isInAir;
-        public bool isGrounded;
-        public bool canDoCombo;
-        public bool isUsingRightHand;
-        public bool isUsingLeftHand;
-
         private void Awake()
         {
             cameraHandler = FindFirstObjectByType<CameraHandler>();

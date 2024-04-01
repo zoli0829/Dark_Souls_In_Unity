@@ -9,7 +9,7 @@ namespace ZV
         public PursueTargetState pursueTargetState;
         public LayerMask detectionLayer;
 
-        public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             if (enemyManager.isInteracting)
                 return this;

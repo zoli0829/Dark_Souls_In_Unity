@@ -13,16 +13,25 @@ namespace ZV
         public CriticalDamageCollider backStabCollider;
         public CriticalDamageCollider riposteCollider;
 
+        [Header("Interaction")]
+        public bool isInteracting;
+
         [Header("Combat Flags")]
         public bool canBeReposted;
         public bool canBeParried;
+        public bool canDoCombo;
         public bool isParrying;
         public bool isBlocking;
         public bool isInvulnerable;
+        public bool isUsingRightHand;
+        public bool isUsingLeftHand;
 
         [Header("Movement Flags")]
         public bool isRotatingWithRootMotion;
         public bool canRotate;
+        public bool isSprinting;
+        public bool isInAir;
+        public bool isGrounded;
 
         // Damage will be inflicted during an animation event
         // Used in backstab or riposte animations

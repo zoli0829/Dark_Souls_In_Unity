@@ -7,49 +7,12 @@ namespace ZV
     public class EnemyAnimatorManager : AnimatorManager
     {
         EnemyManager enemyManager;
-        EnemyStats enemyStats;
-
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             animator = GetComponent<Animator>();
-            enemyManager = GetComponentInParent<EnemyManager>();
-            enemyStats = GetComponentInParent<EnemyStats>();
-        }
-
-        public override void TakeCriticalDamageAnimationEvent()
-        {
-            enemyStats.TakeDamageNoAnimation(enemyManager.pendindCriticalDamage);
-            enemyManager.pendindCriticalDamage = 0;
-        }
-
-        public void CanRotate()
-        {
-            animator.SetBool("canRotate", true);
-        }
-
-        public void StopRotation()
-        {
-            animator.SetBool("canRotate", false);
-        }
-
-        public void EnableCombo()
-        {
-            animator.SetBool("canDoCombo", true);
-        }
-
-        public void DisableCombo()
-        {
-            animator.SetBool("canDoCombo", false);
-        }
-
-        public void EnableIsInvulnerable()
-        {
-            animator.SetBool("isInvulnerable", true);
-        }
-
-        public void DisableIsInvulnerable()
-        {
-            animator.SetBool("isInvulnerable", false);
+            enemyManager = GetComponent<EnemyManager>();
         }
 
         public void AwardSoulsOnDeath()
@@ -60,33 +23,13 @@ namespace ZV
 
             if (playerStats != null)
             {
-                playerStats.AddSouls(enemyStats.soulsAwardedOnDeath);
+                playerStats.AddSouls(characterStatsManager.soulsAwardedOnDeath);
 
                 if (soulCounter != null)
                 {
                     soulCounter.SetSoulCountText(playerStats.soulCount);
                 }
             }
-        }
-
-        public void EnableIsParrying()
-        {
-            enemyManager.isParrying = true;
-        }
-
-        public void DisableIsParrying()
-        {
-            enemyManager.isParrying = false;
-        }
-
-        public void EnableCanBeRiposted()
-        {
-            enemyManager.canBeReposted = true;
-        }
-
-        public void DisableCanBeReposted()
-        {
-            enemyManager.canBeReposted = false;
         }
 
         private void OnAnimatorMove()

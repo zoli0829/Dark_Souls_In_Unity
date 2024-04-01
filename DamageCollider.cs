@@ -83,7 +83,7 @@ namespace ZV
 
             if(collision.tag == "Enemy")
             {
-                EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
+                EnemyStatsManager enemyStats = collision.GetComponent<EnemyStatsManager>();
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 

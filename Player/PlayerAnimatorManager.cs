@@ -7,18 +7,16 @@ namespace ZV
     public class PlayerAnimatorManager : AnimatorManager
     {
         InputHandler inputHandler;
-        PlayerManager playerManager;
-        PlayerStatsManager playerStatsManager;
         PlayerLocomotionManager playerLocomotionManager;
         int vertical;
         int horizontal;
 
-        public void Initialize()
+        protected override void Awake()
         {
+            base.Awake();
+
             inputHandler = GetComponent<InputHandler>();
             animator = GetComponentInChildren<Animator>();
-            playerManager = GetComponent<PlayerManager>();
-            playerStatsManager = GetComponent<PlayerStatsManager>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
@@ -86,62 +84,6 @@ namespace ZV
             animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
-        public void CanRotate()
-        {
-            animator.SetBool("canRotate", true);
-        }
-
-        public void StopRotation()
-        {
-            animator.SetBool("canRotate", false);
-        }
-
-        public void EnableCombo()
-        {
-            animator.SetBool("canDoCombo", true);
-        }
-
-        public void DisableCombo()
-        {
-            animator.SetBool("canDoCombo", false);
-        }
-
-        public void EnableIsInvulnerable()
-        {
-            animator.SetBool("isInvulnerable", true);
-        }
-
-        public void DisableIsInvulnerable()
-        {
-            animator.SetBool("isInvulnerable", false);
-        }
-
-        public void EnableIsParrying()
-        {
-            playerManager.isParrying = true;
-        }
-
-        public void DisableIsParrying()
-        {
-            playerManager.isParrying = false;
-        }
-
-        public void EnableCanBeRiposted()
-        {
-            playerManager.canBeReposted = true;
-        }
-
-        public void DisableCanBeReposted()
-        {
-            playerManager.canBeReposted = false;
-        }
-
-        public override void TakeCriticalDamageAnimationEvent()
-        {
-            playerStatsManager.TakeDamageNoAnimation(playerManager.pendindCriticalDamage);
-            playerManager.pendindCriticalDamage = 0;
-        }
-
         public void DisableCollision()
         {
             playerLocomotionManager.characterCollider.enabled = false;
@@ -156,7 +98,7 @@ namespace ZV
 
         private void OnAnimatorMove()
         {
-            if (playerManager.isInteracting == false)
+            if (characterManager.isInteracting == false)
                 return;
 
             float delta = Time.deltaTime;
