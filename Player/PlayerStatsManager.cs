@@ -8,9 +8,9 @@ namespace ZV
     {
         PlayerManager playerManager;
 
-        HealthBar healthBar;
-        StaminaBar staminaBar;
-        FocusPointBar focusPointBar;
+        [SerializeField] HealthBar healthBar;
+        [SerializeField] StaminaBar staminaBar;
+        [SerializeField] FocusPointBar focusPointBar;
         PlayerAnimatorManager playerAnimatorManager;
 
         [SerializeField] float staminaRegenerationAmount = 25;
@@ -71,12 +71,12 @@ namespace ZV
             return maxFocusPoints;
         }
 
-        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
         {
             if (playerManager.isInvulnerable)
                 return;
 
-            base.TakeDamage(damage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, damageAnimation = "Damage_01");
             healthBar.SetCurrentHealth(currentHealth);
             playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
@@ -88,9 +88,9 @@ namespace ZV
             }
         }
 
-        public override void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int physicalDamage)
         {
-            base.TakeDamageNoAnimation(damage);
+            base.TakeDamageNoAnimation(physicalDamage);
 
             healthBar.SetCurrentHealth(currentHealth);
         }

@@ -11,7 +11,7 @@ namespace ZV
         public bool isUnarmed;
 
         [Header("Damage")]
-        public int baseDamage = 25;
+        public int physicalDamage;
         public int criticalDamageMultiplier = 4;
 
         [Header("Poise")]

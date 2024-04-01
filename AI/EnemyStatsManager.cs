@@ -44,9 +44,9 @@ namespace ZV
             return maxHealth;
         }
 
-        public override void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int physicalDamage)
         {
-            base.TakeDamageNoAnimation(damage);
+            base.TakeDamageNoAnimation(physicalDamage);
 
             enemyHealthBar.SetHealth(currentHealth);
         }
@@ -56,9 +56,9 @@ namespace ZV
             enemyAnimatorManager.PlayTargetAnimation("Break Guard", true);
         }
 
-        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
         {
-            base.TakeDamage(damage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, damageAnimation = "Damage_01");
 
             enemyHealthBar.SetHealth(currentHealth);
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);

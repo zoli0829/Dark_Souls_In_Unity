@@ -74,9 +74,9 @@ namespace ZV
             }
         }
 
-        public virtual void TakeDamageNoAnimation(int damage)
+        public virtual void TakeDamageNoAnimation(int physicalDamage)
         {
-            currentHealth -= damage;
+            currentHealth -= physicalDamage;
 
             if (currentHealth <= 0)
             {

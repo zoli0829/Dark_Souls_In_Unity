@@ -8,7 +8,7 @@ namespace ZV
     public class DamageCollider : MonoBehaviour
     {
         public CharacterManager characterManager;
-        Collider damageCollider;
+        protected Collider damageCollider;
         public bool enabledDamageColliderOnStartUp = false;
 
         [Header("Poise")]
@@ -16,9 +16,9 @@ namespace ZV
         public float offensivePoiseBonus;
 
         [Header("Damage")]
-        public int currentWeaponDamage = 25;
+        public int physicalDamage;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             damageCollider = GetComponent<Collider>();
             damageCollider.gameObject.SetActive(true);
@@ -38,73 +38,26 @@ namespace ZV
 
         private void OnTriggerEnter(Collider collision)
         {
-            if(collision.tag == "Player")
+            if(collision.tag == "Character")
             {
-                PlayerStatsManager playerStats = collision.GetComponent<PlayerStatsManager>();
-                CharacterManager playerCharacterManager = collision.GetComponent<CharacterManager>();
-                CharacterEffectsManager playerEffectsManager = collision.GetComponent<CharacterEffectsManager>();
+                CharacterStatsManager enemyStats = collision.GetComponent<CharacterStatsManager>();
+                CharacterManager enemyManager = collision.GetComponent<CharacterManager>();
+                CharacterEffectsManager enemyEffects = collision.GetComponent<CharacterEffectsManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
-                if(playerCharacterManager != null)
+                if(enemyManager != null)
                 {
-                    if(playerCharacterManager.isParrying)
+                    if(enemyManager.isParrying)
                     {
                         // CHECK HERE IF WE ARE PARRYABLE
                         characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
                         return;
                     }
-                    else if(shield != null && playerCharacterManager.isBlocking)
+                    else if(shield != null && enemyManager.isBlocking)
                     {
-                        float physicalDamageAfterBlock = currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
+                        float physicalDamageAfterBlock = physicalDamage - (physicalDamage * shield.blockingPhysicalDamageAbsorption) / 100;
 
-                        if(playerStats != null)
-                        {
-                            playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Guard");
-                            return;
-                        }
-                    }
-                }
-
-                if(playerStats != null)
-                {
-                    playerStats.poiseResetTimer = playerStats.totalPoiseResetTime;
-                    playerStats.totalPoiseDefence = playerStats.totalPoiseDefence - poiseBreak;
-
-                    // DETECTS WHERE ON THE COLLIDER OUR WEAPON FIRST MAKES CONTACT
-                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                    playerEffectsManager.PlayBloodSplatterFX(contactPoint);
-
-                    if (playerStats.totalPoiseDefence > poiseBreak)
-                    {
-                        playerStats.TakeDamageNoAnimation(currentWeaponDamage);
-                    }
-                    else
-                    {
-                        playerStats.TakeDamage(currentWeaponDamage);
-                    }
-                }
-            }
-
-            if(collision.tag == "Enemy")
-            {
-                EnemyStatsManager enemyStats = collision.GetComponent<EnemyStatsManager>();
-                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
-                CharacterEffectsManager enemyEffectsManager = collision.GetComponent<CharacterEffectsManager>();
-                BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
-
-                if (enemyCharacterManager != null)
-                {
-                    if (enemyCharacterManager.isParrying)
-                    {
-                        // CHECK HERE IF WE ARE PARRYABLE
-                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
-                        return;
-                    }
-                    else if (shield != null && enemyCharacterManager.isBlocking)
-                    {
-                        float physicalDamageAfterBlock = currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
-
-                        if (enemyStats != null)
+                        if(enemyStats != null)
                         {
                             enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Guard");
                             return;
@@ -112,22 +65,22 @@ namespace ZV
                     }
                 }
 
-                if (enemyStats != null)
+                if(enemyStats != null)
                 {
                     enemyStats.poiseResetTimer = enemyStats.totalPoiseResetTime;
                     enemyStats.totalPoiseDefence = enemyStats.totalPoiseDefence - poiseBreak;
 
                     // DETECTS WHERE ON THE COLLIDER OUR WEAPON FIRST MAKES CONTACT
                     Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                    enemyEffectsManager.PlayBloodSplatterFX(contactPoint);
+                    enemyEffects.PlayBloodSplatterFX(contactPoint);
 
                     if (enemyStats.totalPoiseDefence > poiseBreak)
                     {
-                        enemyStats.TakeDamageNoAnimation(currentWeaponDamage);
+                        enemyStats.TakeDamageNoAnimation(physicalDamage);
                     }
                     else
                     {
-                        enemyStats.TakeDamage(currentWeaponDamage);
+                        enemyStats.TakeDamage(physicalDamage);
                     }
                 }
             }

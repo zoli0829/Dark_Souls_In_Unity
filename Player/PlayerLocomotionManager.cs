@@ -23,7 +23,7 @@ namespace ZV
         [SerializeField] float groundDetectionRayStartPoint = 0.5f;
         [SerializeField] float minimumDistanceNeededToBeginToFall = 1f;
         [SerializeField] float groundDirectionRayDistance = 0.2f;
-        LayerMask ignoreForGroundCheck;
+        public LayerMask groundLayer;
         public float inAirTimer;
 
         [Header("Movement Stats")]
@@ -58,7 +58,6 @@ namespace ZV
             cameraObject = Camera.main.transform;
             myTransform = transform;
             playerManager.isGrounded = true;
-            ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
             Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);
         }
 
@@ -232,7 +231,7 @@ namespace ZV
 
             Debug.DrawRay(origin, Vector3.down * minimumDistanceNeededToBeginToFall, Color.red, 0.1f, false);
 
-            if(Physics.Raycast(origin, Vector3.down, out hit, minimumDistanceNeededToBeginToFall, ignoreForGroundCheck))
+            if(Physics.Raycast(origin, Vector3.down, out hit, minimumDistanceNeededToBeginToFall, groundLayer))
             {
                 normalVector = hit.normal;
                 Vector3 tp = hit.point; // target position
