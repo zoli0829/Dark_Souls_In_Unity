@@ -81,6 +81,8 @@ namespace ZV
 
                 rightHandDamageCollider.physicalDamage = leftHandWeapon.physicalDamage;
 
+                leftHandDamageCollider.teamIDNumber = enemyStatsManager.teamIDNumber;
+
                 enemyEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
             }
             else
@@ -89,6 +91,8 @@ namespace ZV
                 rightHandDamageCollider.characterManager = GetComponentInParent<CharacterManager>();
 
                 rightHandDamageCollider.physicalDamage = rightHandWeapon.physicalDamage;
+
+                rightHandDamageCollider.teamIDNumber = enemyStatsManager.teamIDNumber;
 
                 enemyEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
             }

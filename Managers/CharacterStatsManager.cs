@@ -6,6 +6,9 @@ namespace ZV
 {
     public class CharacterStatsManager : MonoBehaviour
     {
+        [Header("Team ID")]
+        public int teamIDNumber = 0;
+
         public int healthLevel = 10;
         public int maxHealth;
         public int currentHealth;

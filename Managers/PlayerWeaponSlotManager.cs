@@ -127,6 +127,9 @@ namespace ZV
         {
             leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             leftHandDamageCollider.physicalDamage = playerInventoryManager.leftWeapon.physicalDamage;
+
+            leftHandDamageCollider.teamIDNumber = playerStatsManager.teamIDNumber;
+
             leftHandDamageCollider.poiseBreak = playerInventoryManager.leftWeapon.poiseBreak;
             playerEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
         }
@@ -135,6 +138,9 @@ namespace ZV
         {
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             rightHandDamageCollider.physicalDamage = playerInventoryManager.rightWeapon.physicalDamage;
+
+            rightHandDamageCollider.teamIDNumber = playerStatsManager.teamIDNumber;
+
             rightHandDamageCollider.poiseBreak = playerInventoryManager.rightWeapon.poiseBreak;
             playerEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
         }

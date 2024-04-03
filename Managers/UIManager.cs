@@ -8,6 +8,7 @@ namespace ZV
     {
         public PlayerInventoryManager playerInventoryManager;
         public EquipmentWindowUI equipmentWindowUI;
+        private QuickSlotsUI quickSlotsUI;
 
         [Header("UI Windows")]
         public GameObject hudWindow;
@@ -29,12 +30,15 @@ namespace ZV
         private void Awake()
         {
             playerInventoryManager = FindFirstObjectByType<PlayerInventoryManager>();
+            quickSlotsUI = GetComponentInChildren<QuickSlotsUI>();
         }
 
         private void Start()
         {
             weaponInventorySlots = weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
             equipmentWindowUI.LoadWeaponsOnEquipmentScreen(playerInventoryManager);
+            quickSlotsUI.UpdateCurrentSpellIcon(playerInventoryManager.currentSpell);
+            quickSlotsUI.UpdateCurrentConsumableIcon(playerInventoryManager.currentConsumableItem);
         }
 
         public void UpdateUI()

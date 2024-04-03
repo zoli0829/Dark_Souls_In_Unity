@@ -11,6 +11,9 @@ namespace ZV
         protected Collider damageCollider;
         public bool enabledDamageColliderOnStartUp = false;
 
+        [Header("Team ID")]
+        public int teamIDNumber = 0;
+
         [Header("Poise")]
         public float poiseBreak;
         public float offensivePoiseBonus;
@@ -47,6 +50,9 @@ namespace ZV
 
                 if(enemyManager != null)
                 {
+                    if (enemyStats.teamIDNumber == teamIDNumber)
+                        return;
+
                     if(enemyManager.isParrying)
                     {
                         // CHECK HERE IF WE ARE PARRYABLE
@@ -67,6 +73,9 @@ namespace ZV
 
                 if(enemyStats != null)
                 {
+                    if (enemyStats.teamIDNumber == teamIDNumber)
+                        return;
+
                     enemyStats.poiseResetTimer = enemyStats.totalPoiseResetTime;
                     enemyStats.totalPoiseDefence = enemyStats.totalPoiseDefence - poiseBreak;
 
