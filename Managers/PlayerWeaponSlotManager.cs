@@ -13,6 +13,7 @@ namespace ZV
         PlayerInventoryManager playerInventoryManager;
         PlayerStatsManager playerStatsManager;
         PlayerEffectsManager playerEffectsManager;
+        PlayerAnimatorManager playerAnimatorManager;
         CameraHandler cameraHandler;
 
         [Header("Attacking Weapon")]
@@ -30,6 +31,7 @@ namespace ZV
             playerManager = GetComponent<PlayerManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerEffectsManager = GetComponent <PlayerEffectsManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             animator = GetComponentInChildren<Animator>();
             quickSlotsUI = FindFirstObjectByType<QuickSlotsUI>();
 
@@ -73,7 +75,7 @@ namespace ZV
                     leftHandSlot.LoadWeaponModel(weaponItem);
                     LoadLeftWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
-                    animator.CrossFade(weaponItem.left_hand_idle, 0.2f);
+                    playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
                 }
                 else
                 {
@@ -81,19 +83,18 @@ namespace ZV
                     {
                         backSlot.LoadWeaponModel(leftHandSlot.currentWeapon);
                         leftHandSlot.UnloadWeaponAndDestroy();
-                        animator.CrossFade(weaponItem.th_idle, 0.2f);
+                        playerAnimatorManager.PlayTargetAnimation("Left Arm Empty", false, true);
                     }
                     else
                     {
-                        animator.CrossFade("Both Arms Empty", 0.2f);
                         backSlot.UnloadWeaponAndDestroy();
-                        animator.CrossFade(weaponItem.right_hand_idle, 0.2f);
                     }
 
                     rightHandSlot.currentWeapon = weaponItem;
                     rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
+                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
                 }
             }
             else
@@ -102,21 +103,21 @@ namespace ZV
 
                 if(isLeft)
                 {
-                    animator.CrossFade("Left Arm Empty", 0.2f);
                     playerInventoryManager.leftWeapon = unarmedWeapon;
-                    leftHandSlot.currentWeapon = unarmedWeapon;
-                    leftHandSlot.LoadWeaponModel(unarmedWeapon);
+                    leftHandSlot.currentWeapon = weaponItem;
+                    leftHandSlot.LoadWeaponModel(weaponItem);
                     LoadLeftWeaponDamageCollider();
-                    quickSlotsUI.UpdateWeaponQuickSlotsUI(true, unarmedWeapon);
+                    quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
+                    playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
                 }
                 else
                 {
-                    animator.CrossFade("Right Arm Empty", 0.2f);
                     playerInventoryManager.rightWeapon = unarmedWeapon;
-                    rightHandSlot.currentWeapon = unarmedWeapon;
-                    rightHandSlot.LoadWeaponModel(unarmedWeapon);
+                    rightHandSlot.currentWeapon = weaponItem;
+                    rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
-                    quickSlotsUI.UpdateWeaponQuickSlotsUI(false, unarmedWeapon);
+                    quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
+                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
                 }
             }
         }

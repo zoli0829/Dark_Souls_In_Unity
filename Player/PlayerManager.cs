@@ -39,6 +39,7 @@ namespace ZV
             float delta = Time.deltaTime;
             isInteracting = animator.GetBool("isInteracting");
             canDoCombo = animator.GetBool("canDoCombo");
+            animator.SetBool("isTwoHandingWeapon", isTwoHandingWeapon);
             animator.SetBool("isInAir", isInAir);
             animator.SetBool("isDead", playerStatsManager.isDead);
             animator.SetBool("isBlocking", isBlocking);

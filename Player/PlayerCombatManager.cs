@@ -16,6 +16,23 @@ namespace ZV
         PlayerWeaponSlotManager playerWeaponSlotManager;
         PlayerEffectsManager playerEffectsManager;
 
+        [Header("Attack Animations")]
+        string oh_light_attack_01 = "oh_light_attack_01";
+        string oh_light_attack_02 = "oh_light_attack_02";
+        string oh_light_attack_03 = "oh_light_attack_03";
+        string oh_light_attack_04 = "oh_light_attack_04";
+
+        string oh_heavy_attack_01 = "oh_heavy_attack_01";
+
+        string th_light_attack_01 = "th_light_attack_01";
+        string th_light_attack_02 = "th_light_attack_02";
+        string th_light_attack_03 = "th_light_attack_03";
+
+        string th_heavy_attack_01 = "th_heavy_attack_01";
+
+        string weapon_art = "weapon_art";
+
+
         public string lastAttack;
 
         LayerMask backStabLayer = 1 << 12;
@@ -34,6 +51,39 @@ namespace ZV
             cameraHandler = FindFirstObjectByType<CameraHandler>();
         }
 
+        public void HandleRBAction()
+        {
+            if (playerInventoryManager.rightWeapon.weaponType == WeaponType.StraightSword 
+                || playerInventoryManager.rightWeapon.weaponType == WeaponType.Unarmed)
+            {
+                PerformRBMeleeAction();
+            }
+            else if (playerInventoryManager.rightWeapon.weaponType == WeaponType.SpellCaster
+                || playerInventoryManager.rightWeapon.weaponType == WeaponType.FaithCaster
+                || playerInventoryManager.rightWeapon.weaponType == WeaponType.PyroCaster)
+            {
+                PerformRBMagicAction(playerInventoryManager.rightWeapon);
+            }
+        }
+
+        public void HandleLBAction()
+        {
+            PerformLBBlockingAction();
+        }
+
+        public void HandleLTAction()
+        {
+            if (playerInventoryManager.leftWeapon.weaponType == WeaponType.Shield
+                || playerInventoryManager.rightWeapon.weaponType == WeaponType.Unarmed)
+            {
+                PerformLTWeaponArt(inputHandler.twoHandFlag);
+            }
+            else if (playerInventoryManager.leftWeapon.weaponType == WeaponType.StraightSword)
+            {
+                // do a light attack
+            }
+        }
+
         public void HandleWeaponCombo(WeaponItem weapon)
         {
             // Check if we have stamina, if we do not, return
@@ -44,17 +94,17 @@ namespace ZV
             {
                 playerAnimatorManager.animator.SetBool("canDoCombo", false);
 
-                if (lastAttack == weapon.oh_light_attack_01)
+                if (lastAttack == oh_light_attack_01)
                 {
-                    playerAnimatorManager.PlayTargetAnimation(weapon.oh_light_attack_02, true);
+                    playerAnimatorManager.PlayTargetAnimation(oh_light_attack_02, true);
                 }
-                else if(lastAttack == weapon.th_light_attack_01)
+                else if(lastAttack == th_light_attack_01)
                 {
-                    playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_02, true);
+                    playerAnimatorManager.PlayTargetAnimation(th_light_attack_02, true);
                 }
-                else if(lastAttack == weapon.th_light_attack_02)
+                else if(lastAttack == th_light_attack_02)
                 {
-                    playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_03, true);
+                    playerAnimatorManager.PlayTargetAnimation(th_light_attack_03, true);
                 }
             }
         }
@@ -69,13 +119,13 @@ namespace ZV
 
             if (inputHandler.twoHandFlag)
             {
-                playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_01, true);
-                lastAttack = weapon.th_light_attack_01;
+                playerAnimatorManager.PlayTargetAnimation(th_light_attack_01, true);
+                lastAttack = th_light_attack_01;
             }
             else
             {
-                playerAnimatorManager.PlayTargetAnimation(weapon.oh_light_attack_01, true);
-                lastAttack = weapon.oh_light_attack_01;
+                playerAnimatorManager.PlayTargetAnimation(oh_light_attack_01, true);
+                lastAttack = oh_light_attack_01;
             }
         }
 
@@ -93,45 +143,10 @@ namespace ZV
             }
             else
             {
-                playerAnimatorManager.PlayTargetAnimation(weapon.oh_heavy_attack_01, true);
-                lastAttack = weapon.oh_heavy_attack_01;
+                playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_01, true);
+                lastAttack = oh_heavy_attack_01;
             }
         }
-
-        #region Input Actions
-
-        public void HandleRBAction()
-        {
-            if (playerInventoryManager.rightWeapon.isMeleeWeapon)
-            {
-                PerformRBMeleeAction();
-            }
-            else if(playerInventoryManager.rightWeapon.isSpellCaster || playerInventoryManager.rightWeapon.isFaithCaster || playerInventoryManager.rightWeapon.isPyroCaster)
-            {
-                PerformRBMagicAction(playerInventoryManager.rightWeapon);
-            }
-        }
-
-        public void HandleLBAction()
-        {
-            PerformLBBlockingAction();
-        }
-
-        public void HandleLTAction()
-        {
-            if(playerInventoryManager.leftWeapon.isShieldWeapon)
-            {
-                PerformLTWeaponArt(inputHandler.twoHandFlag);
-            }
-            else if(playerInventoryManager.leftWeapon.isMeleeWeapon)
-            {
-                // do a light attack
-            }
-        }
-
-        #endregion
-
-        #region Attack Actions
 
         private void PerformRBMeleeAction()
         {
@@ -157,12 +172,25 @@ namespace ZV
             playerEffectsManager.PlayWeaponFX(false);
         }
 
+        private void PerformLBBlockingAction()
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if (playerManager.isBlocking)
+                return;
+
+            playerAnimatorManager.PlayTargetAnimation("Block Start", false, true);
+            playerEquipmentManager.OpenBlockingCollider();
+            playerManager.isBlocking = true;
+        }
+
         private void PerformRBMagicAction(WeaponItem weapon)
         {
             if (playerManager.isInteracting)
                 return;
 
-            if(weapon.isFaithCaster)
+            if(weapon.weaponType == WeaponType.FaithCaster)
             {
                 if(playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isFaithSpell)
                 {
@@ -189,7 +217,7 @@ namespace ZV
             }
             else
             {
-                playerAnimatorManager.PlayTargetAnimation(playerInventoryManager.leftWeapon.weapon_art, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon_art, true);
             }
         }
 
@@ -197,25 +225,6 @@ namespace ZV
         {
             playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager);
         }
-
-        #endregion
-
-        #region Defensive Actions
-
-        private void PerformLBBlockingAction()
-        {
-            if (playerManager.isInteracting)
-                return;
-
-            if (playerManager.isBlocking)
-                return;
-
-            playerAnimatorManager.PlayTargetAnimation("Block Start", false, true);
-            playerEquipmentManager.OpenBlockingCollider();
-            playerManager.isBlocking = true;
-        }
-
-        #endregion
 
         public void AttemptBackstabOrRipose()
         {
