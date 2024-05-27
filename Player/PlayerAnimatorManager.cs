@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ZV
 {
-    public class PlayerAnimatorManager : AnimatorManager
+    public class PlayerAnimatorManager : CharacterAnimatorManager
     {
         InputHandler inputHandler;
         PlayerLocomotionManager playerLocomotionManager;

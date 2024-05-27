@@ -54,6 +54,8 @@ namespace ZV
             HandleRecoveryTimer();
             HandleStateMachine();
 
+            isUsingLeftHand = enemyAnimationManager.animator.GetBool("isUsingLeftHand");
+            isUsingRightHand = enemyAnimationManager.animator.GetBool("isUsingRightHand");
             isRotatingWithRootMotion = enemyAnimationManager.animator.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimationManager.animator.GetBool("isInteracting");
             isInvulnerable = enemyAnimationManager.animator.GetBool("isInvulnerable");

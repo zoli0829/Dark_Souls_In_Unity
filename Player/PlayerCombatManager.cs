@@ -53,6 +53,8 @@ namespace ZV
 
         public void HandleRBAction()
         {
+            playerAnimatorManager.EraseHandIKForWeapon();
+
             if (playerInventoryManager.rightWeapon.weaponType == WeaponType.StraightSword 
                 || playerInventoryManager.rightWeapon.weaponType == WeaponType.Unarmed)
             {
@@ -262,7 +264,7 @@ namespace ZV
                     playerAnimatorManager.PlayTargetAnimation("Back Stab", true);
 
                     // make enemy play animation
-                    enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Back Stabbed", true);
+                    enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Back Stabbed", true);
 
                     // do damage
 
@@ -292,7 +294,7 @@ namespace ZV
                     enemyCharacterManager.pendindCriticalDamage = criticalDamage;
 
                     playerAnimatorManager.PlayTargetAnimation("Riposte", true);
-                    enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Reposted", true);
+                    enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Reposted", true);
                 }
             }
         }

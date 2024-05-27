@@ -6,6 +6,12 @@ namespace ZV
 {
     public class ResetAnimatorBool : StateMachineBehaviour
     {
+        public string isUsingRightHand = "isUsingRightHand";
+        public bool isUsingRightHandStatus = false;
+
+        public string isUsingLeftHand = "isUsingLeftHand";
+        public bool isUsingLeftHandStatus = false;
+
         public string isInvulnerable = "isInvulnerable";
         public bool isInvulnerableStatus = false;
 
@@ -24,6 +30,8 @@ namespace ZV
             animator.SetBool(canRotateBool, canRotateStatus);
             animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
             animator.SetBool(isInvulnerable, isInvulnerableStatus);
+            animator.SetBool(isUsingRightHand, isUsingRightHandStatus);
+            animator.SetBool(isUsingLeftHand, isUsingLeftHandStatus);
         }
     }
 }

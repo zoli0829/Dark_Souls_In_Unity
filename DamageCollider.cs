@@ -56,7 +56,7 @@ namespace ZV
                     if(enemyManager.isParrying)
                     {
                         // CHECK HERE IF WE ARE PARRYABLE
-                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
+                        characterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Parried", true);
                         return;
                     }
                     else if(shield != null && enemyManager.isBlocking)
