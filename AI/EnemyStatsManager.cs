@@ -10,8 +10,10 @@ namespace ZV
         EnemyAnimatorManager enemyAnimatorManager;
         public UIEnemyHealthBar enemyHealthBar;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             enemyManager = GetComponent<EnemyManager>();
             enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyHealthBar = GetComponentInChildren<UIEnemyHealthBar>();

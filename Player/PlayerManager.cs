@@ -19,8 +19,10 @@ namespace ZV
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             cameraHandler = FindFirstObjectByType<CameraHandler>();
             interactableUI = FindFirstObjectByType<InteractableUI>();
             backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
@@ -56,8 +58,10 @@ namespace ZV
             CheckForInteractableObject();
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
+
             float delta = Time.fixedDeltaTime;
 
             playerLocomotion.HandleMovement(delta);

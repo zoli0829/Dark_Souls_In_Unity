@@ -16,8 +16,10 @@ namespace ZV
         [SerializeField] float staminaRegenerationAmount = 25;
         [SerializeField] float staminaRegenTimer = 0; 
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             playerManager = GetComponent<PlayerManager>();
             healthBar = FindAnyObjectByType<HealthBar>();
             staminaBar = FindAnyObjectByType<StaminaBar>();

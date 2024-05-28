@@ -6,6 +6,7 @@ namespace ZV
 {
     public class CharacterStatsManager : MonoBehaviour
     {
+        CharacterAnimatorManager characterAnimatorManager;
         [Header("Team ID")]
         public int teamIDNumber = 0;
 
@@ -39,6 +40,11 @@ namespace ZV
 
         public bool isDead;
 
+        protected virtual void Awake()
+        { 
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+        }
+
         private void Start()
         {
             totalPoiseDefence = armorPoiseBonus;
@@ -53,6 +59,8 @@ namespace ZV
         {
             if(isDead)
                 return;
+
+            characterAnimatorManager.EraseHandIKForWeapon();
 
             float totalPhysicalDamageAbsorption = 1 - 
                 (1 - physicalDamageAbsorptionHead / 100) * 

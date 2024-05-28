@@ -6,6 +6,9 @@ namespace ZV
 {
     public class CharacterManager : MonoBehaviour
     {
+        CharacterAnimatorManager characterAnimatorManager;
+        CharacterWeaponSlotManager characterWeaponSlotManager;
+
         [Header("Lock On Transform")]
         public Transform lockOnTransform;
 
@@ -37,5 +40,16 @@ namespace ZV
         // Damage will be inflicted during an animation event
         // Used in backstab or riposte animations
         public int pendindCriticalDamage;
+
+        protected virtual void Awake()
+        { 
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+            characterWeaponSlotManager = GetComponent<CharacterWeaponSlotManager>();
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            characterAnimatorManager.CheckHandIKWeight(characterWeaponSlotManager.rightHandIKTarget, characterWeaponSlotManager.leftHandIKTarget, isTwoHandingWeapon);
+        }
     }
 }

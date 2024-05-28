@@ -76,8 +76,6 @@ namespace ZV
                 nakedHeadModel.SetActive(false);
                 helmetModelChanger.EquipHelmetModelByName(playerInventoryManager.currentHelmetEquipment.helmetModelName);
                 playerStatsManager.physicalDamageAbsorptionHead = playerInventoryManager.currentHelmetEquipment.physicalDefense;
-
-                Debug.Log("Helmet Absorption is " + playerStatsManager.physicalDamageAbsorptionHead + "%");
             }
             else
             {
@@ -99,8 +97,6 @@ namespace ZV
                 upperLeftArmModelChanger.EquiparmModelByName(playerInventoryManager.currentTorsoEqipment.upperLeftArmModelName);
                 upperRightArmModelChanger.EquiparmModelByName(playerInventoryManager.currentTorsoEqipment.upperRightArmModelName);
                 playerStatsManager.physicalDamageAbsorptionBody = playerInventoryManager.currentTorsoEqipment.physicalDefense;
-
-                Debug.Log("Body Absorption is " + playerStatsManager.physicalDamageAbsorptionBody + "%");
             }
             else
             {
@@ -123,8 +119,6 @@ namespace ZV
                 leftLegModelChanger.EquipLeftLegModelByName(playerInventoryManager.currentLegEquipment.leftLegModelName);
                 rightLegModelChanger.EquipRightLegModelByName(playerInventoryManager.currentLegEquipment.rightLegModelName);
                 playerStatsManager.physicalDamageAbsorptionLegs = playerInventoryManager.currentLegEquipment.physicalDefense;
-
-                Debug.Log("Leg Absorption is " + playerStatsManager.physicalDamageAbsorptionLegs + "%");
             }
             else
             {
@@ -150,8 +144,6 @@ namespace ZV
                 leftHandModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.leftHandModelName);
                 rightHandModelChanger.EquiparmModelByName(playerInventoryManager.currentHandEquipment.rightHandModelName);
                 playerStatsManager.physicalDamageAbsorptionHands = playerInventoryManager.currentHandEquipment.physicalDefense;
-
-                Debug.Log("Hand Absorption is " + playerStatsManager.physicalDamageAbsorptionHands + "%");
             }
             else
             {

@@ -192,6 +192,7 @@ namespace ZV
                 if(inputHandler.moveAmount > 0)
                 {
                     playerAnimatorManager.PlayTargetAnimation("Rolling", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
@@ -200,6 +201,7 @@ namespace ZV
                 else
                 {
                     playerAnimatorManager.PlayTargetAnimation("Backstep", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
                     playerStatsManager.TakeStaminaDamage(backstepStaminaCost);
                 }
             }
@@ -302,6 +304,7 @@ namespace ZV
                     moveDirection = cameraObject.forward * inputHandler.vertical;
                     moveDirection += cameraObject.right * inputHandler.horizontal;
                     playerAnimatorManager.PlayTargetAnimation("Jump", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
                     moveDirection.y = 0;
                     Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = jumpRotation;
