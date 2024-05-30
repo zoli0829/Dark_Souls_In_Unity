@@ -73,12 +73,12 @@ namespace ZV
             return maxFocusPoints;
         }
 
-        public override void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, string damageAnimation)
         {
             if (playerManager.isInvulnerable)
                 return;
 
-            base.TakeDamage(physicalDamage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, damageAnimation);
             healthBar.SetCurrentHealth(currentHealth);
             playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 

@@ -132,6 +132,7 @@ namespace ZV
             leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             leftHandDamageCollider.physicalDamage = characterInventoryManager.leftWeapon.physicalDamage;
 
+            leftHandDamageCollider.characterManager = characterManager;
             leftHandDamageCollider.teamIDNumber = characterStatsManager.teamIDNumber;
 
             leftHandDamageCollider.poiseBreak = characterInventoryManager.leftWeapon.poiseBreak;
@@ -143,6 +144,7 @@ namespace ZV
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             rightHandDamageCollider.physicalDamage = characterInventoryManager.rightWeapon.physicalDamage;
 
+            rightHandDamageCollider.characterManager = characterManager;
             rightHandDamageCollider.teamIDNumber = characterStatsManager.teamIDNumber;
 
             rightHandDamageCollider.poiseBreak = characterInventoryManager.rightWeapon.poiseBreak;

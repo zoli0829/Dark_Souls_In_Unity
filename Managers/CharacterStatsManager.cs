@@ -55,7 +55,7 @@ namespace ZV
             HandlePoiseResetTimer();
         }
 
-        public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
+        public virtual void TakeDamage(int physicalDamage, string damageAnimation)
         {
             if(isDead)
                 return;

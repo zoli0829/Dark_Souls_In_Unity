@@ -58,9 +58,9 @@ namespace ZV
             enemyAnimatorManager.PlayTargetAnimation("Break Guard", true);
         }
 
-        public override void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, string damageAnimation)
         {
-            base.TakeDamage(physicalDamage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, damageAnimation);
 
             enemyHealthBar.SetHealth(currentHealth);
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
