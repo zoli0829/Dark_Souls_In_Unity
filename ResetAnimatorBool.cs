@@ -24,6 +24,9 @@ namespace ZV
         public string isRotatingWithRootMotion = "isRotatingWithRootMotion";
         public bool isRotatingWithRootMotionStatus = false;
 
+        public string isMirrored = "isMirrored";
+        public bool isMirroredStatus = false;
+
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             animator.SetBool(isInteractingBool, isInteractingStatus);
@@ -32,6 +35,7 @@ namespace ZV
             animator.SetBool(isInvulnerable, isInvulnerableStatus);
             animator.SetBool(isUsingRightHand, isUsingRightHandStatus);
             animator.SetBool(isUsingLeftHand, isUsingLeftHandStatus);
+            animator.SetBool(isMirrored, isMirroredStatus);
         }
     }
 }

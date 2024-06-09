@@ -48,6 +48,7 @@ namespace ZV
             isUsingRightHand = animator.GetBool("isUsingRightHand");
             isUsingLeftHand = animator.GetBool("isUsingLeftHand");
             isInvulnerable = animator.GetBool("isInvulnerable");
+            isAiming = animator.GetBool("isAiming");
 
             inputHandler.TickInput(delta);
             playerAnimatorManager.canRotate = animator.GetBool("canRotate");

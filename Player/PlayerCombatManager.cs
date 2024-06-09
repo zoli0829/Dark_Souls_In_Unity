@@ -64,13 +64,33 @@ namespace ZV
                 || playerInventoryManager.rightWeapon.weaponType == WeaponType.FaithCaster
                 || playerInventoryManager.rightWeapon.weaponType == WeaponType.PyroCaster)
             {
-                PerformRBMagicAction(playerInventoryManager.rightWeapon);
+                PerformMagicAction(playerInventoryManager.rightWeapon, false);
             }
         }
 
         public void HandleLBAction()
         {
-            PerformLBBlockingAction();
+            if(playerManager.isTwoHandingWeapon)
+            {
+                if (playerInventoryManager.rightWeapon.weaponType == WeaponType.Bow)
+                {
+                    PerformLBAimingAction();
+                }
+            }
+            else
+            {
+                if(playerInventoryManager.leftWeapon.weaponType == WeaponType.Shield ||
+                   playerInventoryManager.leftWeapon.weaponType == WeaponType.StraightSword)
+                {
+                    PerformLBBlockingAction();
+                }
+                else if(playerInventoryManager.leftWeapon.weaponType == WeaponType.FaithCaster ||
+                    playerInventoryManager.leftWeapon.weaponType == WeaponType.PyroCaster)
+                {
+                    PerformMagicAction(playerInventoryManager.leftWeapon, true);
+                    playerAnimatorManager.animator.SetBool("isUsingLeftHand", true);
+                }
+            }
         }
 
         public void HandleLTAction()
@@ -187,7 +207,12 @@ namespace ZV
             playerManager.isBlocking = true;
         }
 
-        private void PerformRBMagicAction(WeaponItem weapon)
+        private void PerformLBAimingAction()
+        {
+            playerAnimatorManager.animator.SetBool("isAiming", true);
+        }
+
+        private void PerformMagicAction(WeaponItem weapon, bool isLeftHanded)
         {
             if (playerManager.isInteracting)
                 return;
@@ -198,7 +223,7 @@ namespace ZV
                 {
                     if(playerStatsManager.currentFocusPoints >= playerInventoryManager.currentSpell.focusPointCost)
                     {
-                        playerInventoryManager.currentSpell.AttemptToCastSpell(playerAnimatorManager, playerStatsManager, playerWeaponSlotManager);
+                        playerInventoryManager.currentSpell.AttemptToCastSpell(playerAnimatorManager, playerStatsManager, playerWeaponSlotManager, isLeftHanded);
                     }
                     else
                     {
@@ -225,7 +250,7 @@ namespace ZV
 
         private void SuccessfullyCastSpell()
         {
-            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager);
+            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager,playerManager.isUsingLeftHand);
         }
 
         public void AttemptBackstabOrRipose()

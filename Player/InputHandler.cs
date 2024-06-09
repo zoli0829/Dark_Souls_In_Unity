@@ -124,15 +124,27 @@ namespace ZV
             HandleTwoHandInput();
             HandleCriticalAttackInput();
             HandleUseConsumableInput();
+            HandleLBInput();
         }
 
         private void HandleMoveInput(float delta)
         {
-            horizontal = movementInput.x;
-            vertical = movementInput.y;
-            moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
-            mouseX = cameraInput.x;
-            mouseY = cameraInput.y;
+            if(playerManager.isAiming)
+            {
+                horizontal = movementInput.x;
+                vertical = movementInput.y;
+                moveAmount = Mathf.Clamp01((Mathf.Abs(horizontal) + Mathf.Abs(vertical)) / 2);
+                mouseX = cameraInput.x;
+                mouseY = cameraInput.y;
+            }
+            else
+            {
+                horizontal = movementInput.x;
+                vertical = movementInput.y;
+                moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
+                mouseX = cameraInput.x;
+                mouseY = cameraInput.y;
+            }
         }
 
         private void HandleRollInput(float delta)
@@ -193,20 +205,6 @@ namespace ZV
                 }
             }
 
-            if(lb_Input)
-            {
-                playerCombatManager.HandleLBAction();
-            }
-            else
-            {
-                playerManager.isBlocking = false;
-
-                if(blockingCollider.blockingCollider.enabled)
-                {
-                    blockingCollider.DisableBlockingCollider();
-                }
-            }
-
             if(lt_Input)
             {
                 // if two handing weapon art
@@ -218,6 +216,34 @@ namespace ZV
                 else
                 {
                     playerCombatManager.HandleLTAction();
+                }
+            }
+        }
+
+        private void HandleLBInput()
+        {
+            if (playerManager.isInAir || playerManager.isSprinting || playerManager.isInteracting)
+            {
+                lb_Input = false;
+                return;
+            }
+
+            if (lb_Input)
+            {
+                playerCombatManager.HandleLBAction();
+            }
+            else if(lb_Input == false)
+            {
+                playerManager.isBlocking = false;
+
+                if (blockingCollider.blockingCollider.enabled)
+                {
+                    blockingCollider.DisableBlockingCollider();
+                }
+
+                if(playerManager.isAiming)
+                {
+                    playerAnimatorManager.animator.SetBool("isAiming", false);
                 }
             }
         }

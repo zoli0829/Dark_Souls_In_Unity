@@ -11,7 +11,8 @@ namespace ZV
         StraightSword,
         SpellCaster,
         FaithCaster,
-        PyroCaster
+        PyroCaster,
+        Bow
     }
 
     public class Enums : MonoBehaviour

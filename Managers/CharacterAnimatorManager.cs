@@ -25,11 +25,12 @@ namespace ZV
             rigBuilder = GetComponent<RigBuilder>();
         }
 
-        public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false)
+        public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false, bool mirrorAnimation = false)
         {
             animator.applyRootMotion = isInteracting;
             animator.SetBool("canRotate", canRotate);
             animator.SetBool("isInteracting", isInteracting);
+            animator.SetBool("isMirrored", mirrorAnimation);
             animator.CrossFade(targetAnim, 0.2f);
         }
 
@@ -102,13 +103,18 @@ namespace ZV
             // CHECK IF WE ARE TWO HANDING OUR WEAPON
             if (isTwoHandingWeapon)
             {
-                rightHandConstraint.data.target = rightHandTarget.transform;
-                rightHandConstraint.data.targetPositionWeight = 1;
-                rightHandConstraint.data.targetRotationWeight = 1;
-
-                leftHandConstraint.data.target = leftHandTarget.transform;
-                leftHandConstraint.data.targetPositionWeight = 1;
-                leftHandConstraint.data.targetRotationWeight = 1;
+                if (rightHandTarget != null)
+                {
+                    rightHandConstraint.data.target = rightHandTarget.transform;
+                    rightHandConstraint.data.targetPositionWeight = 1;
+                    rightHandConstraint.data.targetRotationWeight = 1;
+                }
+                if(leftHandTarget != null)
+                {
+                    leftHandConstraint.data.target = leftHandTarget.transform;
+                    leftHandConstraint.data.targetPositionWeight = 1;
+                    leftHandConstraint.data.targetRotationWeight = 1;
+                }
             }
             else 
             {

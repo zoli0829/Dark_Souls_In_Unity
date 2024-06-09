@@ -28,6 +28,7 @@ namespace ZV
         public bool isInvulnerable;
         public bool isUsingRightHand;
         public bool isUsingLeftHand;
+        public bool isAiming;
         public bool isTwoHandingWeapon;
 
         [Header("Movement Flags")]
